@@ -1,11 +1,6 @@
-
+#pragma once
 #include <lvgl.h>
 
-#include "screens/screen_clock.h"
-#pragma once
+extern lv_group_t *default_group;
 void ui_init();
-void ui_update();
-
-extern lv_display_t * disp;
-extern lv_indev_t * touchscreen;
-extern lv_indev_t * encoder;
+extern void globalEventHandler(lv_event_t *e);

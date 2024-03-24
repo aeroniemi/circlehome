@@ -31,3 +31,8 @@
 *.out
 *.app
 .pio/*
+
+# custom
+**/secrets.h
+*.json
+.vscode/*
