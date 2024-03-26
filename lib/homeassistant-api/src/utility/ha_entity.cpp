@@ -105,6 +105,13 @@ void HomeAssistant::updateAllStates()
     } while (http_stream.findUntil(",", "]"));
     _httpClient.end();
 }
+Entity * HomeAssistant::getActiveEntity() {
+    return _activeEntity;
+}
+void HomeAssistant::setActiveEntity(Entity* entity)
+{
+    _activeEntity = entity;
+}
 // void HomeAssistant::updateStates() {
 //     Stream http_stream = sendGetRequestStream("/api/states");
 //     JsonDocument entity_json;

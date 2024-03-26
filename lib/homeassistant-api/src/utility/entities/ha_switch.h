@@ -4,9 +4,9 @@
 class Switch : public Entity {
 public:
     using Entity::Entity;
-    // void turnOn();
-    // void turnOff();
-    // void toggle();
-    // bool getState();
+    void turnOn();
+    void turnOff();
+    void toggle();
+    bool getState();
 };
 #endif

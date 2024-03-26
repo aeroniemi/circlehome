@@ -4,11 +4,13 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <WiFi.h>
-#include "ha_entity.h"
+// #include "ha_entity.h"
 
 #ifndef HA_MAX_ENTITIES
-#define HA_MAX_ENTITIES 10
+#define HA_MAX_ENTITIES 30
 #endif
+class Entity;
+const JsonDocument empty_json;
 class HomeAssistant
 {
 private:
@@ -20,22 +22,26 @@ private:
     bool _ensureConnected();
     Entity *_entities[HA_MAX_ENTITIES];
     int _definedEntities = 0;
+    Entity *_activeEntity;
 
 public:
     HomeAssistant(char *wifi_ssid, char *wifi_password, char *host, int port, char *token);
     void getDeviceList();
     bool isConnected();
     bool checkServerStatus();
-    int triggerService(Entity *entity, String service) { return 0; };
+    int triggerService(Entity *entity, String service);
     int sendGetRequest(String endpoint);
     JsonDocument sendGetRequestWithResponse(String endpoint);
-    int sendPostRequest(String endpoint, JsonDocument body);
-    JsonDocument sendPostRequestWithResponse(String endpoint, JsonDocument body);
+    int sendPostRequest(String endpoint, JsonDocument body=empty_json);
+    JsonDocument sendPostRequestWithResponse(String endpoint, JsonDocument body=empty_json);
     Entity *getEntityByIdentifier(String identifier);
+    Entity *getEntityByFriendlyName(String friendly_name);
     bool addEntity(Entity *entity);
     void updateAllStates();
     void createEntities();
     String getRollerString(String domain);
+    Entity *getActiveEntity();
+    void setActiveEntity(Entity *entity);
 };
 extern HomeAssistant *ha;
 

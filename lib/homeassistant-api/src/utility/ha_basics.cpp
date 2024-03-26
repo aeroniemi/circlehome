@@ -13,6 +13,7 @@ bool HomeAssistant::checkServerStatus()
     return false;
 }
 void HomeAssistant::getDeviceList(){};
+
 Entity * HomeAssistant::getEntityByIdentifier(String identifier)
 {
     for (int i = 0; i < _definedEntities; i++)
@@ -23,6 +24,18 @@ Entity * HomeAssistant::getEntityByIdentifier(String identifier)
         }
     }
     log_w("No Entity with identifier '%s' found", identifier.c_str());
+    return nullptr;
+}
+Entity * HomeAssistant::getEntityByFriendlyName(String friendly_name)
+{
+    for (int i = 0; i < _definedEntities; i++)
+    {
+        if (_entities[i]->getFriendlyName().equals(friendly_name))
+        {
+            return _entities[i];
+        }
+    }
+    log_w("No Entity with friendly_name '%s' found", friendly_name.c_str());
     return nullptr;
 }
 
@@ -37,4 +50,11 @@ bool HomeAssistant::addEntity(Entity *entity)
     _definedEntities++;
     return true;
 }
+int HomeAssistant::triggerService(Entity *entity, String service) {
+    JsonDocument body;
+    body["entity_id"] = entity->getIdentifier();
+    int response = sendPostRequest(String("/api/services/" + entity->getDomain() + "/" + service), body);
+    return response;
+}
+
 #endif

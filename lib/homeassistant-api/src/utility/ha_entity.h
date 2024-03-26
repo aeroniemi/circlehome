@@ -2,7 +2,7 @@
 #define HA_ENTITY
 #include <Arduino.h>
 #include <ArduinoJson.h>
-
+#include "ha_homeassistant.h"
 class Entity
 {
 private:
@@ -22,5 +22,17 @@ public:
     void updateIfRequired();
     String getFriendlyName();
     void updateStateFromJSON(JsonDocument data);
+    inline bool turnOn(HomeAssistant *ha)
+    {
+        return ha->triggerService(this, "turn_on") == 200;
+    }
+    inline bool turnOff(HomeAssistant *ha)
+    {
+        return ha->triggerService(this, "turn_off") == 200;
+    }
+    inline bool toggle(HomeAssistant *ha)
+    {
+        return ha->triggerService(this, "toggle") == 200;
+    }
 };
 #endif

@@ -2,7 +2,7 @@
 #include "../ha_api.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
-
+#include <ArduinoJson.h>
 int HomeAssistant::sendGetRequest(String endpoint)
 {
     if (!_ensureConnected())
@@ -43,6 +43,7 @@ int HomeAssistant::sendPostRequest(String endpoint, JsonDocument body)
     Serial.println("Sending POST request to " + endpoint);
     _httpClient.begin(_host, _port, endpoint);
     _httpClient.addHeader("Authorization", _token);
+    _httpClient.addHeader("content-type", "application/json");
     String json;
     serializeJson(body, json);
     int status_code = _httpClient.POST(json);
@@ -54,6 +55,7 @@ JsonDocument HomeAssistant::sendPostRequestWithResponse(String endpoint, JsonDoc
     Serial.println("Sending POST request to " + endpoint);
     _httpClient.begin(_host, _port, endpoint);
     _httpClient.addHeader("Authorization", _token);
+    _httpClient.addHeader("content-type", "application/json");
     String json;
     serializeJson(body, json);
     int status_code = _httpClient.POST(json);
