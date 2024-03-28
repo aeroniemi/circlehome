@@ -5,6 +5,7 @@
 #include "sys/sleep_mgmt.h"
 #include <ha_api.h>
 #include "secrets.h"
+#include "ui/screens/screen_loading.h"
 
 HomeAssistant * ha;
 void log_cb(lv_log_level_t level, const char * buf)
@@ -23,6 +24,9 @@ void setup()
     // lv_log_register_print_cb(log_cb);
     m5dial_lvgl_init();
  
+    screen_loading_init();
+    lv_screen_load(screen_loading);
+    m5dial_lvgl_next();
     ha = new HomeAssistant(SECRET_WIFI_SSID, SECRET_WIFI_PASSWORD, SECRET_HA_HOSTNAME, SECRET_HA_PORT, SECRET_HA_TOKEN);
     ha->createEntities();
     ha->updateAllStates();
