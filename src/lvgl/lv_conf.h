@@ -652,7 +652,7 @@
 #endif
 
 /*API for LittleFs. */
-#define LV_USE_FS_LITTLEFS 1
+#define LV_USE_FS_LITTLEFS 0
 #if LV_USE_FS_LITTLEFS
     #define LV_FS_LITTLEFS_LETTER 'L'     /*Set an upper cased letter on which the drive will accessible (e.g. 'A')*/
 #endif

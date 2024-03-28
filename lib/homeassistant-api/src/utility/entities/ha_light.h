@@ -4,14 +4,27 @@
 #include "../ha_homeassistant.h"
 class Light : public Entity
 {
+private:
+    bool _mode_brightness;
+    bool _mode_color_temp;
+    bool _mode_rgb;
+    bool _mode_rgbw;
+
+public:
     using Entity::Entity;
-    bool turnOn(HomeAssistant ha);
-    bool turnOff(HomeAssistant ha);
-    bool toggle(HomeAssistant ha);
     bool getState(HomeAssistant ha);
-    void setBrightness(HomeAssistant ha, int brightness);
+    inline bool setBrightness(HomeAssistant* ha, int brightness)
+    {
+        JsonDocument request;
+        request["brightness"] = brightness;
+        return ha->triggerService(this, "turn_on", request) == 200;
+    };
     int getBrightness(HomeAssistant ha);
     void getColor(HomeAssistant ha);
     void setColor(HomeAssistant ha);
+    lv_obj_t *getEntityPage() { return screen_on_off; };
+    bool supportsBrightness() { return _mode_brightness; };
+    bool supportsRGB() { return _mode_rgb or _mode_rgbw; };
+    bool supportsColorTemp() { return _mode_color_temp; };
 };
 #endif

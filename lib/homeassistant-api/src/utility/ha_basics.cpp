@@ -50,10 +50,10 @@ bool HomeAssistant::addEntity(Entity *entity)
     _definedEntities++;
     return true;
 }
-int HomeAssistant::triggerService(Entity *entity, String service) {
-    JsonDocument body;
-    body["entity_id"] = entity->getIdentifier();
-    int response = sendPostRequest(String("/api/services/" + entity->getDomain() + "/" + service), body);
+int HomeAssistant::triggerService(Entity *entity, String service, JsonDocument data)
+{
+    data["entity_id"] = entity->getIdentifier();
+    int response = sendPostRequest(String("/api/services/" + entity->getDomain() + "/" + service), data);
     return response;
 }
 

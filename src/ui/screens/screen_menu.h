@@ -2,16 +2,17 @@
 #define SCREEN_MENU
 #include <lvgl.h>
 #include <ha_api.h>
-static lv_obj_t *screen_menu;
-static lv_obj_t *menu_text;
+lv_obj_t *screen_menu;
+lv_obj_t *menu_text;
 lv_obj_t *menu_roller;
 void roller_event_cb(lv_event_t *e)
 {
     char friendlyName[40];
     lv_roller_get_selected_str(menu_roller, friendlyName, 40);
     ha->setActiveEntity(ha->getEntityByFriendlyName(friendlyName));
-    log_d("Active Entity: %s", ha->getActiveEntity()->getIdentifier().c_str());
-        ha->getActiveEntity()->toggle(ha);
+    lv_screen_load(ha->getActiveEntity()->getEntityPage());
+    // log_d("Active Entity: %s", ha->getActiveEntity()->getIdentifier().c_str());
+    //     ha->getActiveEntity()->toggle(ha);
 }
 lv_group_t *screen_menu_group;
 inline void screen_menu_init()
@@ -38,7 +39,7 @@ inline void screen_menu_init()
     lv_obj_set_style_bg_color(menu_roller, lv_color_hex(0x4055A4), LV_PART_SELECTED | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(menu_roller, 255, LV_PART_SELECTED | LV_STATE_DEFAULT);
 
-    lv_obj_add_event_cb(menu_roller, roller_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    // lv_obj_add_event_cb(menu_roller, roller_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 };
 #endif
 

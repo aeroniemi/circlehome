@@ -29,11 +29,11 @@ public:
     void getDeviceList();
     bool isConnected();
     bool checkServerStatus();
-    int triggerService(Entity *entity, String service);
+    int triggerService(Entity *entity, String service, JsonDocument data = JsonDocument());
     int sendGetRequest(String endpoint);
     JsonDocument sendGetRequestWithResponse(String endpoint);
-    int sendPostRequest(String endpoint, JsonDocument body=empty_json);
-    JsonDocument sendPostRequestWithResponse(String endpoint, JsonDocument body=empty_json);
+    int sendPostRequest(String endpoint, JsonDocument body = JsonDocument());
+    JsonDocument sendPostRequestWithResponse(String endpoint, JsonDocument body = JsonDocument());
     Entity *getEntityByIdentifier(String identifier);
     Entity *getEntityByFriendlyName(String friendly_name);
     bool addEntity(Entity *entity);

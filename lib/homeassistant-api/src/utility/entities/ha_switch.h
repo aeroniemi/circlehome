@@ -8,5 +8,6 @@ public:
     void turnOff();
     void toggle();
     bool getState();
+    lv_obj_t *getEntityPage() { return screen_on_off; };
 };
 #endif
