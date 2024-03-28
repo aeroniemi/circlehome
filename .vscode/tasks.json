@@ -1,0 +1,51 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Generate Icons",
+            "type": "shell",
+            "windows": {
+                "command": "python .\\support\\LVGLimage.py",
+                "args": [
+                    "--cf A8",
+                    "--output .\\data\\icons",
+                    ".\\assets_source\\icons\\"
+                ]
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "none"
+        },
+        {
+            "label": "Generate Images",
+            "type": "shell",
+            "windows": {
+                "command": "python .\\support\\LVGLimage.py",
+                "args": [
+                    "--cf I8",
+                    "--output .\\data\\images",
+                    ".\\assets_source\\images\\"
+                ]
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "none"
+        },
+        {
+            "label": "Generate Fonts",
+            "type": "shell",
+            "windows": {
+                "command": "lv_font_conv --font ./assets_source/fonts/NunitoSans.ttf --size 16 --bpp 8 --format lvgl --range 32-127 --output ./data/fonts/nunito_sans_16.h",
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "none",
+            "problemMatcher": []
+        }
+    ]
+}

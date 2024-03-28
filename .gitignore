@@ -36,3 +36,4 @@
 **/secrets.h
 *.json
 .vscode/*
+!.vscode/tasks.json
