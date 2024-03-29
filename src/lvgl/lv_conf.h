@@ -983,6 +983,8 @@
 #define LV_USE_DEMO_VECTOR_GRAPHIC  0
 /*--END OF LV_CONF_H--*/
 
+#define LV_INDEV_DEF_LONG_PRESS_TIME      2000
+
 #endif /*LV_CONF_H*/
 
 #endif /*End of "Content enable"*/

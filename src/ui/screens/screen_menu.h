@@ -38,8 +38,8 @@ inline void screen_menu_init()
 
     lv_obj_set_style_bg_color(menu_roller, lv_color_hex(0x4055A4), LV_PART_SELECTED | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(menu_roller, 255, LV_PART_SELECTED | LV_STATE_DEFAULT);
-
-    // lv_obj_add_event_cb(menu_roller, roller_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
+    
+    lv_obj_add_event_cb(menu_roller, roller_event_cb, LV_EVENT_VALUE_CHANGED, NULL);
 };
 #endif
 

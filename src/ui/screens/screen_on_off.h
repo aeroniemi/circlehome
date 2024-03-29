@@ -7,6 +7,7 @@ lv_obj_t *screen_on_off_arc;
 lv_obj_t *screen_on_off_entity_name;
 lv_obj_t *screen_on_off_button;
 lv_group_t *screen_on_off_group;
+lv_timer_t *on_off_arc_handler_timer;
 LV_IMAGE_DECLARE(lightbulb_off);
 LV_IMAGE_DECLARE(lightbulb_on);
 
@@ -22,7 +23,6 @@ void on_off_arc_handler(lv_timer_t * timer)
     log_d("arc value %d", arc_value);
     if (on_off_arc_last_pos == arc_value)
         return;
-    // ha->setActiveEntity(ha->getEntityByIdentifier("light.esphome_web_2a0cc0_main_leds"));
     on_off_arc_last_pos = arc_value;
     int brightness = (arc_value * 255) / 50;
     log_d("set brightness on arc to %d", brightness);
@@ -33,6 +33,11 @@ void on_off_arc_handler(lv_timer_t * timer)
 static void on_off_load_cb(lv_event_t *e)
 {
     lv_label_set_text(screen_on_off_entity_name, ha->getActiveEntity()->getFriendlyName().c_str());
+    lv_timer_resume(on_off_arc_handler_timer);
+}
+static void on_off_unload_cb(lv_event_t *e)
+{
+    lv_timer_pause(on_off_arc_handler_timer);
 }
 inline void screen_on_off_init()
 {
@@ -80,10 +85,11 @@ inline void screen_on_off_init()
     lv_obj_set_x(screen_on_off_button, 3);
     lv_obj_set_y(screen_on_off_button, 63);
     lv_obj_set_align(screen_on_off_button, LV_ALIGN_CENTER);
-    lv_obj_add_event_cb(screen_on_off_button, on_off_btn_handler, LV_EVENT_CLICKED, NULL);
-    lv_timer_create(on_off_arc_handler, 500, NULL);
-    // lv_obj_add_event_cb(screen_on_off_arc, on_off_arc_handler, LV_EVENT_VALUE_CHANGED, NULL);
-    // lv_obj_add_event_cb(screen_on_off, on_off_load_cb, LV_EVENT_SCREEN_LOAD_START, NULL);
+    lv_obj_add_event_cb(screen_on_off_button, on_off_btn_handler, LV_EVENT_PRESSED, NULL);
+    on_off_arc_handler_timer = lv_timer_create(on_off_arc_handler, 300, NULL);
+    lv_timer_pause(on_off_arc_handler_timer);
+    lv_obj_add_event_cb(screen_on_off, on_off_load_cb, LV_EVENT_SCREEN_LOAD_START, NULL);
+    lv_obj_add_event_cb(screen_on_off, on_off_unload_cb, LV_EVENT_SCREEN_UNLOAD_START, NULL);
 };
 
 #endif
