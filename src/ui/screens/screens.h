@@ -1,6 +1,10 @@
-#include <lvgl.h>
-extern lv_obj_t *screen_on_off;
-extern lv_obj_t *screen_menu;
-extern lv_obj_t *screen_dim_lamp;
-extern lv_obj_t *screen_color_lamp;
-extern lv_obj_t *screen_clock;
+#ifndef SCREENS_H
+#define SCREENS_H
+#include "Screen.h"
+#include "Screen_Clock.h"
+#include "Screen_Entity_Menu.h"
+#include "Screen_Loading.h"
+#include "Screen_On_Off.h"
+
+extern Screen * global_screens[];
+#endif
