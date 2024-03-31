@@ -24,6 +24,7 @@ void setup()
     // lv_log_register_print_cb(log_cb);
     m5dial_lvgl_init();
  
+    M5Dial.Display.setBrightness(70);
     screen_loading_init();
     lv_screen_load(screen_loading);
     m5dial_lvgl_next();
