@@ -1,10 +1,13 @@
- 
+
 #include "../ha_api.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 int HomeAssistant::sendGetRequest(String endpoint)
 {
+#if NETWORKING_ENABLED == 0
+    return 200;
+#else
     if (!_ensureConnected())
         //! error
         ;
@@ -17,6 +20,7 @@ int HomeAssistant::sendGetRequest(String endpoint)
     _httpClient.end();
     log_d("GET request completed with status code: %d", status_code);
     return status_code;
+#endif
 }
 JsonDocument HomeAssistant::sendGetRequestWithResponse(String endpoint)
 {
@@ -28,18 +32,22 @@ JsonDocument HomeAssistant::sendGetRequestWithResponse(String endpoint)
     _httpClient.addHeader("Authorization", _token);
     int status_code = _httpClient.GET();
     JsonDocument response;
-    deserializeJson(response,_httpClient.getStream());
+    deserializeJson(response, _httpClient.getStream());
     _httpClient.end();
     response["status_code"] = status_code;
     Serial.println("Status: " + status_code);
-    
+
     return response;
 }
 int HomeAssistant::sendPostRequest(String endpoint, JsonDocument body)
 {
+#if NETWORKING_ENABLED == 0
+    return 200;
+#else
+
     if (!_ensureConnected())
         ;
-        //!error
+    //! error
     Serial.println("Sending POST request to " + endpoint);
     _httpClient.begin(_host, _port, endpoint);
     _httpClient.addHeader("Authorization", _token);
@@ -50,8 +58,10 @@ int HomeAssistant::sendPostRequest(String endpoint, JsonDocument body)
     _httpClient.end();
     Serial.println("Status: " + status_code);
     return status_code;
+#endif
 }
-JsonDocument HomeAssistant::sendPostRequestWithResponse(String endpoint, JsonDocument body){
+JsonDocument HomeAssistant::sendPostRequestWithResponse(String endpoint, JsonDocument body)
+{
     Serial.println("Sending POST request to " + endpoint);
     _httpClient.begin(_host, _port, endpoint);
     _httpClient.addHeader("Authorization", _token);
@@ -66,13 +76,14 @@ JsonDocument HomeAssistant::sendPostRequestWithResponse(String endpoint, JsonDoc
     Serial.println("Status: " + status_code);
     return response;
 }
-HomeAssistant::HomeAssistant(char* wifi_ssid, char* wifi_password, char* host, int port, char* token)
+HomeAssistant::HomeAssistant(char *wifi_ssid, char *wifi_password, char *host, int port, char *token)
 {
     _host = host;
     _token = token;
     _port = port;
     _httpClient.useHTTP10(true);
-    // _httpClient.setReuse(true);
+// _httpClient.setReuse(true);
+#if (NETWORKING_ENABLED == 1)
     Serial.println("Connecting to Wifi...");
     WiFi.begin(wifi_ssid, wifi_password);
     while (WiFi.status() != WL_CONNECTED)
@@ -80,6 +91,7 @@ HomeAssistant::HomeAssistant(char* wifi_ssid, char* wifi_password, char* host, i
         delay(500);
     }
     Serial.println("Connected to Wifi");
+#endif
 }
 bool HomeAssistant::isConnected()
 {
