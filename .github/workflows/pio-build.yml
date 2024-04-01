@@ -21,7 +21,7 @@ jobs:
         run: pip install --upgrade platformio
       - name: Build PlatformIO Project
         run: pio run
-      - uses: actions/upload-artefact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: firmware.elf
           path: ./.pio/m5knob/firmware.elf
