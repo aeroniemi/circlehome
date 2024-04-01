@@ -23,7 +23,7 @@ void log_cb(lv_log_level_t level, const char *buf)
 }
 void initializeScreens()
 {
-    for (uint8_t i = 0; i < sizeof(global_screens) / sizeof(Screen); i++)
+    for (uint8_t i = 0; i < sizeof(global_screens)/sizeof(global_screens[0]) ; i++)
     {
         global_screens[i]->initialize();
     }
@@ -47,6 +47,7 @@ void setup()
     ui_init();
 
     // lv_screen_load(screen_clock);
+    initializeScreens();
 }
 
 void loop()
