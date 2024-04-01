@@ -4,7 +4,7 @@
 #include "ui.h"
 
 static void return_to_menu_cb(lv_event_t *e) {
-    // lv_screen_load(screen_menu);
+    screen_entity_menu.makeActive();
 }
 
 lv_group_t *default_group;
