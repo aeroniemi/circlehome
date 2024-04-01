@@ -66,11 +66,11 @@ public:
             return; // error has not changed, so no need to update the UI
         eh->createMsgBox(error);
     };
-    void createMsgBox(Error error)
+    void createMsgBox(Error* error)
     {
         _msgbox = lv_msgbox_create(NULL);
-        lv_msgbox_add_title(_msgbox, error.title->c_str());
-        lv_msgbox_add_text(_msgbox, error.text->c_str());
+        lv_msgbox_add_title(_msgbox, error->title->c_str());
+        lv_msgbox_add_text(_msgbox, error->text->c_str());
         _btn = lv_msgbox_add_footer_button(_msgbox, "Ok");
         lv_obj_add_event_cb(_btn, onButtonClick, LV_EVENT_CLICKED, this);
     };
