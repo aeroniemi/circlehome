@@ -1,5 +1,5 @@
 #include <lvgl.h>
-#include "M5Dial-LVGL.h"
+#include <M5Dial-LVGL.h>
 #include <Arduino.h>
 #include "ui/ui.h"
 #include "sys/sleep_mgmt.h"
