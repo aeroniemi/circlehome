@@ -60,17 +60,17 @@ public:
         ErrorHandler *eh = (ErrorHandler *)timer->user_data;
         if (eh->_error_queue.isEmpty())
             return; // no errors
-        Error error;
-        eh->_error_queue.peek(&error);
-        if (error.title == eh->_current_error.title)
+        Error* error;
+        eh->_error_queue.peek(error);
+        if (error->title == eh->_current_error->title)
             return; // error has not changed, so no need to update the UI
         eh->createMsgBox(error);
     };
     void createMsgBox(Error error)
     {
         _msgbox = lv_msgbox_create(NULL);
-        lv_msgbox_add_title(_msgbox, error.title);
-        lv_msgbox_add_text(_msgbox, error.text);
+        lv_msgbox_add_title(_msgbox, error.title->c_str());
+        lv_msgbox_add_text(_msgbox, error.text->c_str());
         _btn = lv_msgbox_add_footer_button(_msgbox, "Ok");
         lv_obj_add_event_cb(_btn, onButtonClick, LV_EVENT_CLICKED, this);
     };
