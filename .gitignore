@@ -37,3 +37,4 @@
 *.json
 .vscode/*
 !.vscode/tasks.json
+src/assets/*
