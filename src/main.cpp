@@ -7,6 +7,7 @@
 #include "secrets.h"
 // #include "ui/screens/sree.h"
 #include "sys/aero_time.h"
+#include <cppQueue.h>
 HomeAssistant *ha;
 Screen *global_screens[] = {
     &screen_on_off,
