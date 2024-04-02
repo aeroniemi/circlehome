@@ -5,7 +5,7 @@
 #include <lvgl.h>
 #define ERROR_BUTTON_LEFT 0
 #define ERROR_BUTTON_RIGHT 1
-enum ErrorLevel
+enum UIMessageLevel
 {
     info = 0,
     debug,
@@ -13,51 +13,97 @@ enum ErrorLevel
     error,
     critical
 };
-extern lv_color_t ErrorLevelColor[];
-class ErrorHandler;
-class Error;
-class Error
+extern lv_color_t UIMessageLevelColor[];
+class UIMessageHandler;
+class UIMessageBase;
+
+class UIMessageHandler
+{
+private:
+    cppQueue _error_queue = cppQueue(sizeof(UIMessageBase *), 10, FIFO, true);
+    lv_obj_t *_background;
+    lv_obj_t *_title;
+    lv_obj_t *_text;
+    lv_obj_t *_btnLeft;
+    lv_obj_t *_btnRight;
+    UIMessageBase *_current_error;
+
+public:
+    UIMessageHandler(){};
+    inline void initialize(){};
+    static void update(lv_timer_t *timer);
+    void createMsgBox();
+    void deleteMsgBox()
+    {
+        lv_obj_delete(_background);
+        _current_error = nullptr;
+    };
+    void issue(UIMessageBase *error)
+    {
+        _error_queue.push(&error);
+    }
+    static void onButtonClick(lv_event_t *event);
+    void reboot()
+    {
+        log_d("! Reboot has been requested, will restart shortly.");
+        delay(100);
+        ESP.restart();
+    }
+};
+extern UIMessageHandler eh;
+
+class UIMessageBase
 {
 public:
-    Error(String _title, String _text, String _left_btn_text = F("Ignore"), String _right_btn_text = F("Restart"), ErrorLevel _level = error)
+    UIMessageBase(String _title, String _text, String _left_btn_text, String _right_btn_text, UIMessageLevel _level)
     {
         title = _title;
         text = _text;
         left_btn_text = _left_btn_text;
         right_btn_text = _right_btn_text;
         level = _level;
-    }
+    };
     static lv_color_t _level_colors[5];
-    ErrorLevel level;
+    UIMessageLevel level;
     String title;
     String text;
     String left_btn_text;
     String right_btn_text;
-    void handleLeftButton();
-    void handleRightButton();
+    virtual void handleLeftButton(){};
+    virtual void handleRightButton(){};
     void issue();
+    void close();
 };
-class ErrorHandler
-{
-private:
-    cppQueue _error_queue = cppQueue(sizeof(Error *), 10, FIFO, true);
-    lv_obj_t *_background;
-    lv_obj_t *_title;
-    lv_obj_t *_text;
-    lv_obj_t *_btnLeft;
-    lv_obj_t *_btnRight;
-    Error *_current_error;
 
+class UIInfo : public UIMessageBase
+{
 public:
-    ErrorHandler(){};
-    inline void initialize(){};
-    static void update(lv_timer_t *timer);
-    void createMsgBox(Error *error);
-    void deleteMsgBox()
+    UIInfo(String _text, String _left_btn_text = F("Ignore"), String _right_btn_text = "") : UIMessageBase(F("Info"), _text, _left_btn_text, "", info){};
+    void handleLeftButton() override
     {
-        lv_obj_delete(_background);
+        close();
     };
-    static void onButtonClick(lv_event_t *event);
 };
-extern ErrorHandler eh;
+class UIError : public UIMessageBase
+{
+public:
+    UIError(String _text) : UIMessageBase(F("Error"), _text, F("Ignore"), F("Restart"), error){};
+    void handleLeftButton() override
+    {
+        close();
+    };
+    void handleRightButton() override
+    {
+        eh.reboot();
+    };
+};
+class UICritical : public UIMessageBase
+{
+public:
+    UICritical(String _text) : UIMessageBase(F("Critical"), _text, "", F("Restart"), critical){};
+    void handleRightButton() override
+    {
+        eh.reboot();
+    };
+};
 #endif
