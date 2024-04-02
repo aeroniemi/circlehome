@@ -47,6 +47,7 @@ void Entity::updateStateFromJSON(JsonDocument data)
 }
 void HomeAssistant::createEntities()
 {
+#if NETWORKING_ENABLED == 1
     _httpClient.begin(_host, _port, "/api/states");
     _httpClient.addHeader("Authorization", _token);
     int status_code = _httpClient.GET();
@@ -78,9 +79,11 @@ void HomeAssistant::createEntities()
         //! cleanup
     } while (http_stream.findUntil(",", "]"));
     _httpClient.end();
+#endif
 }
 void HomeAssistant::updateAllStates()
 {
+#if NETWORKING_ENABLED == 1
     _httpClient.begin(_host, _port, "/api/states");
     _httpClient.addHeader("Authorization", _token);
     int status_code = _httpClient.GET();
@@ -104,11 +107,13 @@ void HomeAssistant::updateAllStates()
         //! cleanup
     } while (http_stream.findUntil(",", "]"));
     _httpClient.end();
+#endif
 }
-Entity * HomeAssistant::getActiveEntity() {
+Entity *HomeAssistant::getActiveEntity()
+{
     return _activeEntity;
 }
-void HomeAssistant::setActiveEntity(Entity* entity)
+void HomeAssistant::setActiveEntity(Entity *entity)
 {
     _activeEntity = entity;
 }

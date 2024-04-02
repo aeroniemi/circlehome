@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "M5Dial-LVGL.h"
+#include <M5Dial-LVGL.h>
 #include <lvgl.h>
 #include "ui.h"
 
