@@ -36,4 +36,5 @@
 **/secrets.h
 .vscode/*
 !.vscode/tasks.json
-src/assets/*
+src/assets/icons/*
+src/assets/images/*
