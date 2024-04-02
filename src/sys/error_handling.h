@@ -13,14 +13,21 @@ enum ErrorLevel
     error,
     critical
 };
+extern lv_color_t ErrorLevelColor[];
 class ErrorHandler;
 class Error;
 class Error
 {
 public:
-    Error(String title, String text, String left_btn_text = F("Ignore"), String right_btn_text = F("Restart")) : title{title}, text{text}, left_btn_text{left_btn_text}, right_btn_text{right_btn_text}
+    Error(String _title, String _text, String _left_btn_text = F("Ignore"), String _right_btn_text = F("Restart"), ErrorLevel _level = error)
     {
+        title = _title;
+        text = _text;
+        left_btn_text = _left_btn_text;
+        right_btn_text = _right_btn_text;
+        level = _level;
     }
+    static lv_color_t _level_colors[5];
     ErrorLevel level;
     String title;
     String text;
