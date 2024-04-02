@@ -6,4 +6,5 @@
 #include "utility/ha_ui.h"
 #include "utility/entities/ha_light.h"
 #include "utility/entities/ha_switch.h"
+#include "../../../../../src/sys/error_handling.h"
 #endif
