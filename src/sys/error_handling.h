@@ -12,7 +12,6 @@ enum ErrorLevel
     critical
 };
 class ErrorHandler;
-extern ErrorHandler eh;
 class Error;
 class Error
 {
@@ -27,22 +26,10 @@ public:
     String right_btn_text[10];
     uint32_t left_btn_color;
     uint32_t right_btn_color;
-    inline void handleButtons(ErrorHandler *eh, uint8_t index)
-    {
-        if (index == 0)
-        {
-            handleLeftButton(eh);
-        }
-        else
-        {
-            handleRightButton(eh);
-        }
-    }
-    inline void handleLeftButton(ErrorHandler *eh){};
-    inline void handleRightButton(ErrorHandler *eh){};
-    inline void issue()
-    {
-    }
+    void handleButtons(uint8_t index);
+    inline void handleLeftButton(){};
+    inline void handleRightButton(){};
+    void issue();
 };
 class ErrorHandler
 {
@@ -50,24 +37,13 @@ private:
     cppQueue _error_queue = cppQueue(sizeof(Error *), 10, FIFO, true);
     lv_obj_t *_msgbox;
     lv_obj_t *_btn;
-    Error * _current_error;
+    Error *_current_error;
 
 public:
     ErrorHandler(){};
     inline void initialize(){};
-    static void update(lv_timer_t *timer)
-    {
-        ErrorHandler *eh = (ErrorHandler *)timer->user_data;
-        if (eh->_error_queue.isEmpty())
-            return; // no errors
-        Error* error;
-        eh->_error_queue.peek(error);
-        eh->_current_error->title;
-        if (error == eh->_current_error)
-            return; // error has not changed, so no need to update the UI
-        eh->createMsgBox(error);
-    };
-    void createMsgBox(Error* error)
+    static void update(lv_timer_t *timer);
+    void createMsgBox(Error *error)
     {
         _msgbox = lv_msgbox_create(NULL);
         lv_msgbox_add_title(_msgbox, error->title->c_str());
@@ -79,12 +55,7 @@ public:
     {
         lv_msgbox_close(_msgbox);
     };
-    static void onButtonClick(lv_event_t *event)
-    {
-        ErrorHandler *eh = (ErrorHandler *)event->user_data;
-        uint8_t btn_index = lv_buttonmatrix_get_selected_button(eh->_btn);
-        eh->_current_error->handleButtons(eh, btn_index);
-    };
+    static void onButtonClick(lv_event_t *event);
 };
-
+extern ErrorHandler eh;
 #endif
