@@ -50,7 +50,7 @@ private:
     cppQueue _error_queue = cppQueue(sizeof(Error *), 10, FIFO, true);
     lv_obj_t *_msgbox;
     lv_obj_t *_btn;
-    Error _current_error;
+    Error * _current_error;
 
 public:
     ErrorHandler(){};
@@ -62,7 +62,8 @@ public:
             return; // no errors
         Error* error;
         eh->_error_queue.peek(error);
-        if (error->title == eh->_current_error->title)
+        eh->_current_error->title;
+        if (error == eh->_current_error)
             return; // error has not changed, so no need to update the UI
         eh->createMsgBox(error);
     };
@@ -82,7 +83,7 @@ public:
     {
         ErrorHandler *eh = (ErrorHandler *)event->user_data;
         uint8_t btn_index = lv_buttonmatrix_get_selected_button(eh->_btn);
-        eh->_current_error.handleButtons(eh, btn_index);
+        eh->_current_error->handleButtons(eh, btn_index);
     };
 };
 
