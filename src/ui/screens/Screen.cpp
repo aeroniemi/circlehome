@@ -23,7 +23,6 @@ void Screen::_unload(lv_event_t *event)
 void Screen::_update(lv_event_t *event){};
 void Screen::initialize()
 {
-    Serial.println("init class");
     _initialize();
     create();
 };
