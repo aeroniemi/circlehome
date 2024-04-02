@@ -17,36 +17,15 @@ protected:
         lv_obj_add_event_cb(_lv_screen, _unload, LV_EVENT_SCREEN_UNLOAD_START, this);
         
     };
-    static void _load(lv_event_t *event)
-    {
-        for (uint8_t i = 0; i < SCREEN_MAX_TIMERS; i++)
-        {
-            Screen *screen = (Screen*) event->user_data;
-            if (screen->_timers[i] == nullptr)
-                return;
-            lv_timer_resume(screen->_timers[i]);
-        }
-    };
-    static void _unload(lv_event_t *event){
-        for (uint8_t i = 0; i < SCREEN_MAX_TIMERS; i++)
-        {
-            Screen *screen = (Screen *) event->user_data;
-            if (screen->_timers[i] == nullptr)
-                return;
-            lv_timer_pause(screen->_timers[i]);
-        }
-    };
-    static void _update(lv_event_t *event){};
+    static void _load(lv_event_t *event);
+    static void _unload(lv_event_t *event);
+    static void _update(lv_event_t *event);
 
 public:
     Screen(){};
     inline void makeActive() { lv_screen_load(_lv_screen); };
     inline bool isActive() { return lv_screen_active() == _lv_screen; };
-    inline void initialize()
-    {
-        _initialize();
-        create();
-    };
+    void initialize();
     virtual void create() = 0;
     inline void load(lv_event_t *event) { _load(event); };
     inline void unload(lv_event_t *event) { _unload(event); };
