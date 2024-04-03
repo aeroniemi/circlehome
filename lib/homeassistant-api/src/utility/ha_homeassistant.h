@@ -16,8 +16,8 @@ class HomeAssistant
 private:
     WiFiClient _wifiClient;
     HTTPClient _httpClient;
-    char *_token;
-    char *_host;
+    String _token;
+    String _host;
     int _port;
     bool _ensureConnected();
     Entity *_entities[HA_MAX_ENTITIES];
@@ -26,7 +26,7 @@ private:
     bool _networking_enabled = true;
 
 public:
-    HomeAssistant(char *host, int port, char *token);
+    HomeAssistant();
     void getDeviceList();
     bool isConnected();
     bool checkServerStatus();

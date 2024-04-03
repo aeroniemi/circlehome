@@ -62,7 +62,7 @@ void setup()
     screen_loading.makeActive();
     m5dial_lvgl_next();
     setupWifi();
-    ha = new HomeAssistant(SECRET_HA_HOSTNAME, SECRET_HA_PORT, SECRET_HA_TOKEN);
+    ha = new HomeAssistant();
     setupTime();
     initializeScreens();
     ha->createEntities();
