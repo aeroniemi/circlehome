@@ -4,7 +4,6 @@
 #include "ui/ui.h"
 #include "sys/sleep_mgmt.h"
 #include <ha_api.h>
-#include "secrets.h"
 #include <aero_preferences.h>
 // #include "ui/screens/sree.h"
 #include "sys/aero_time.h"
@@ -23,20 +22,23 @@ void log_cb(lv_log_level_t level, const char *buf)
 }
 void initializeScreens()
 {
-    for (uint8_t i = 0; i < sizeof(global_screens)/sizeof(global_screens[0]) ; i++)
+    for (uint8_t i = 0; i < sizeof(global_screens) / sizeof(global_screens[0]); i++)
     {
         global_screens[i]->initialize();
     }
 }
 UIError error_wifi_not_defined(F("No Wifi credentials are set"));
 UIError error_no_wifi(F("Credentials are set, but cannot connect to the WiFi network"));
-void setupWifi() {
+#define WIFI_TIMEOUT 5000
+void setupWifi()
+{
     Serial.println("Connecting to Wifi...");
-    if (SECRET_WIFI_SSID == "" or SECRET_WIFI_PASSWORD == "") {
+    if (!settings.isKey("wifi_ssid") || !settings.isKey("wifi_password"))
+    {
         error_wifi_not_defined.issue();
         return;
     }
-    WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASSWORD);
+    WiFi.begin(settings.getString("wifi_ssid"),settings.getString("wifi_password"));
     int wifi_time = 0;
     while (WiFi.status() != WL_CONNECTED)
     {
