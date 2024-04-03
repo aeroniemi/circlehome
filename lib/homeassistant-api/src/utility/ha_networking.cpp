@@ -3,6 +3,7 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <aero_preferences.h>
 
 UIError error_no_home_assistant(F("Cannot connect to HomeAssistant"));
 UIError error_auth_home_assistant(F("Authentication with HomeAssistant failed - check token"));
@@ -79,15 +80,15 @@ JsonDocument HomeAssistant::sendPostRequestWithResponse(String endpoint, JsonDoc
     Serial.println("Status: " + status_code);
     return response;
 }
-HomeAssistant::HomeAssistant(char *host, int port, char *token)
+HomeAssistant::HomeAssistant()
 {
     if (!isConnected())
     {
         _networking_enabled = false;
     }
-    _host = host;
-    _token = token;
-    _port = port;
+    _host = settings.getString("ha_hostname");
+    _token = settings.getString("ha_token");
+    _port = settings.getUInt("ha_port");
     _httpClient.useHTTP10(true);
     // _httpClient.setReuse(true);
 }
