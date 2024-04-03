@@ -5,6 +5,7 @@
 #include "sys/sleep_mgmt.h"
 #include <ha_api.h>
 #include "secrets.h"
+#include <aero_preferences.h>
 // #include "ui/screens/sree.h"
 #include "sys/aero_time.h"
 #include <cppQueue.h>
@@ -54,7 +55,7 @@ void setup()
 {
     Serial.begin(115200);
     Serial.setDebugOutput(true);
-
+    setupPreferences();
     // lv_log_register_print_cb(log_cb);
     m5dial_lvgl_init();
     M5Dial.Display.setBrightness(70);
