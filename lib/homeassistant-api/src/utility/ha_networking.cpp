@@ -4,7 +4,6 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-UIError error_no_wifi(F("Cannot connect to WiFi"));
 UIError error_no_home_assistant(F("Cannot connect to HomeAssistant"));
 UIError error_auth_home_assistant(F("Authentication with HomeAssistant failed - check token"));
 UIInfo info_example(F("This is an example of an info message, hello!"),F("Go Team!"));
@@ -82,33 +81,17 @@ JsonDocument HomeAssistant::sendPostRequestWithResponse(String endpoint, JsonDoc
     Serial.println("Status: " + status_code);
     return response;
 }
-HomeAssistant::HomeAssistant(char *wifi_ssid, char *wifi_password, char *host, int port, char *token)
+HomeAssistant::HomeAssistant(char *host, int port, char *token)
 {
     _host = host;
     _token = token;
     _port = port;
     _httpClient.useHTTP10(true);
     // _httpClient.setReuse(true);
-#if (NETWORKING_ENABLED == 1)
-    Serial.println("Connecting to Wifi...");
-    WiFi.begin(wifi_ssid, wifi_password);
-    int wifi_time = 0;
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        if (wifi_time > WIFI_TIMEOUT)
-        {
-            error_no_wifi.issue();
-            break;
-        }
-        delay(500);
-        wifi_time += 500;
-    }
-    Serial.println("Connected to Wifi");
-#endif
 }
 bool HomeAssistant::isConnected()
 {
-    return WiFi.status() == WL_CONNECTED;
+    return WiFi.status() == WL_CONNECTED && _networking_enabled;
 }
 bool HomeAssistant::_ensureConnected()
 {

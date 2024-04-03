@@ -27,6 +27,28 @@ void initializeScreens()
         global_screens[i]->initialize();
     }
 }
+UIError error_wifi_not_defined(F("No Wifi credentials are set"));
+UIError error_no_wifi(F("Credentials are set, but cannot connect to the WiFi network"));
+void setupWifi() {
+    Serial.println("Connecting to Wifi...");
+    if (SECRET_WIFI_SSID == "" or SECRET_WIFI_PASSWORD == "") {
+        error_wifi_not_defined.issue();
+        return;
+    }
+    WiFi.begin(SECRET_WIFI_SSID, SECRET_WIFI_PASSWORD);
+    int wifi_time = 0;
+    while (WiFi.status() != WL_CONNECTED)
+    {
+        if (wifi_time > WIFI_TIMEOUT)
+        {
+            error_no_wifi.issue();
+            return;
+        }
+        delay(500);
+        wifi_time += 500;
+    }
+    Serial.println("Connected to Wifi");
+}
 
 void setup()
 {
@@ -39,7 +61,8 @@ void setup()
     screen_loading.initialize();
     screen_loading.makeActive();
     m5dial_lvgl_next();
-    ha = new HomeAssistant(SECRET_WIFI_SSID, SECRET_WIFI_PASSWORD, SECRET_HA_HOSTNAME, SECRET_HA_PORT, SECRET_HA_TOKEN);
+    setupWifi();
+    ha = new HomeAssistant(SECRET_HA_HOSTNAME, SECRET_HA_PORT, SECRET_HA_TOKEN);
     setupTime();
     initializeScreens();
     ha->createEntities();
