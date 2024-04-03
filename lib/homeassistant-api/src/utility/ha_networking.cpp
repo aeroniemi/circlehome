@@ -81,7 +81,7 @@ JsonDocument HomeAssistant::sendPostRequestWithResponse(String endpoint, JsonDoc
 }
 HomeAssistant::HomeAssistant(char *host, int port, char *token)
 {
-    if (!isConnected)
+    if (!isConnected())
     {
         _networking_enabled = false;
     }
