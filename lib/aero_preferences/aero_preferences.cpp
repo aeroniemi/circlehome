@@ -16,3 +16,10 @@ void setupPreferences() {
     settings.end();
     settings.begin("settings", true);
 }
+void resetPreferences() {
+    settings.end();
+    settings.begin("settings", true);
+    settings.putBool("initialized", false);
+    settings.end();
+    setupPreferences();
+}
