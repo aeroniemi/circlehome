@@ -23,9 +23,10 @@ private:
     Entity *_entities[HA_MAX_ENTITIES];
     int _definedEntities = 0;
     Entity *_activeEntity;
+    bool _networking_enabled = true;
 
 public:
-    HomeAssistant(char *wifi_ssid, char *wifi_password, char *host, int port, char *token);
+    HomeAssistant(char *host, int port, char *token);
     void getDeviceList();
     bool isConnected();
     bool checkServerStatus();

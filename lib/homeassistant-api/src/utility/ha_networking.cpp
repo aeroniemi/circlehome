@@ -6,16 +6,12 @@
 
 UIError error_no_home_assistant(F("Cannot connect to HomeAssistant"));
 UIError error_auth_home_assistant(F("Authentication with HomeAssistant failed - check token"));
-UIInfo info_example(F("This is an example of an info message, hello!"),F("Go Team!"));
+UIInfo info_example(F("This is an example of an info message, hello!"), F("Go Team!"));
 
 int HomeAssistant::sendGetRequest(String endpoint)
 {
-#if NETWORKING_ENABLED == 0
-    return 200;
-#else
     if (!_ensureConnected())
-        //! error
-        ;
+        return 200; //! pretend it did something
     Serial.println("Preparing GET request NR to " + endpoint);
     _httpClient.begin(_host, _port, endpoint);
     _httpClient.addHeader("Authorization", _token);
@@ -25,13 +21,15 @@ int HomeAssistant::sendGetRequest(String endpoint)
     _httpClient.end();
     log_d("GET request completed with status code: %d", status_code);
     return status_code;
-#endif
 }
 JsonDocument HomeAssistant::sendGetRequestWithResponse(String endpoint)
 {
     if (!_ensureConnected())
-        //! error
-        ;
+    {
+        JsonDocument response;
+        response["status_code"] = 200;
+        return response;
+    }
     Serial.println("Sending GET request WR to " + endpoint);
     _httpClient.begin(_host, _port, endpoint);
     _httpClient.addHeader("Authorization", _token);
@@ -46,13 +44,8 @@ JsonDocument HomeAssistant::sendGetRequestWithResponse(String endpoint)
 }
 int HomeAssistant::sendPostRequest(String endpoint, JsonDocument body)
 {
-#if NETWORKING_ENABLED == 0
-    return 200;
-#else
-
     if (!_ensureConnected())
-        ;
-    //! error
+        return 200; //! pretend it did something
     Serial.println("Sending POST request to " + endpoint);
     _httpClient.begin(_host, _port, endpoint);
     _httpClient.addHeader("Authorization", _token);
@@ -63,10 +56,15 @@ int HomeAssistant::sendPostRequest(String endpoint, JsonDocument body)
     _httpClient.end();
     Serial.println("Status: " + status_code);
     return status_code;
-#endif
 }
 JsonDocument HomeAssistant::sendPostRequestWithResponse(String endpoint, JsonDocument body)
 {
+    if (!_ensureConnected())
+    {
+        JsonDocument response;
+        response["status_code"] = 200;
+        return response;
+    }
     Serial.println("Sending POST request to " + endpoint);
     _httpClient.begin(_host, _port, endpoint);
     _httpClient.addHeader("Authorization", _token);
@@ -83,6 +81,10 @@ JsonDocument HomeAssistant::sendPostRequestWithResponse(String endpoint, JsonDoc
 }
 HomeAssistant::HomeAssistant(char *host, int port, char *token)
 {
+    if (!isConnected)
+    {
+        _networking_enabled = false;
+    }
     _host = host;
     _token = token;
     _port = port;
