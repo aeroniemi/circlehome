@@ -2,7 +2,9 @@
 #include <timezonedb_lookup.h>
 #include <WiFi.h>
 #include <M5Dial.h>
-#include "../secrets.h"
+#include <aero_preferences.h>
+
+#define NTP_SERVER "pool.ntp.org"
 
 static void sync_time_cb(timeval *tv)
 {
@@ -16,7 +18,8 @@ inline void setupTime()
     sntp_set_sync_mode(SNTP_SYNC_MODE_IMMED);
     sntp_set_time_sync_notification_cb(sync_time_cb);
     sntp_set_sync_interval(12 * 60 * 60 * 1000UL);
-    configTzTime(NTP_TIMEZONE, NTP_SERVER1, NTP_SERVER2, NTP_SERVER3);
-    setenv("TZ", lookup_posix_timezone_tz(NTP_TIMEZONE), 1);
+    String timezone = settings.getString("ntp_timezone");
+    configTzTime(timezone.c_str(), NTP_SERVER);
+    setenv("TZ", lookup_posix_timezone_tz(timezone.c_str()), 1);
     tzset();
 }
