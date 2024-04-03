@@ -1,4 +1,5 @@
 #include <esp_sntp.h>
+#include <timezonedb_lookup.h>
 #include <WiFi.h>
 #include <M5Dial.h>
 #include "../secrets.h"
@@ -16,4 +17,6 @@ inline void setupTime()
     sntp_set_time_sync_notification_cb(sync_time_cb);
     sntp_set_sync_interval(12 * 60 * 60 * 1000UL);
     configTzTime(NTP_TIMEZONE, NTP_SERVER1, NTP_SERVER2, NTP_SERVER3);
+    setenv("TZ", lookup_posix_timezone_tz(NTP_TIMEZONE), 1);
+    tzset();
 }
