@@ -3,6 +3,7 @@
 #include <cppQueue.h>
 #include <Arduino.h>
 #include <lvgl.h>
+#include <aero_web_portal.h>
 #define ERROR_BUTTON_LEFT 0
 #define ERROR_BUTTON_RIGHT 1
 enum UIMessageLevel
@@ -78,7 +79,8 @@ public:
 class UIInfo : public UIMessageBase
 {
 public:
-    UIInfo(String _text, String _left_btn_text = F("Ignore"), String _right_btn_text = "") : UIMessageBase(F("Info"), _text, _left_btn_text, "", info){
+    UIInfo(String _text, String _left_btn_text = F("Ignore"), String _right_btn_text = "") : UIMessageBase(F("Info"), _text, _left_btn_text, "", info)
+    {
         log_i("%s", _text);
     };
     void handleLeftButton() override
@@ -89,7 +91,8 @@ public:
 class UIError : public UIMessageBase
 {
 public:
-    UIError(String _text) : UIMessageBase(F("Error"), _text, F("Ignore"), F("Restart"), error){
+    UIError(String _text) : UIMessageBase(F("Error"), _text, F("Ignore"), F("Restart"), error)
+    {
         log_e("%s", _text);
     };
     void handleLeftButton() override
@@ -104,8 +107,26 @@ public:
 class UICritical : public UIMessageBase
 {
 public:
-    UICritical(String _text) : UIMessageBase(F("Critical"), _text, "", F("Restart"), critical){
+    UICritical(String _text) : UIMessageBase(F("Critical"), _text, "", F("Restart"), critical)
+    {
         log_e("%s", _text);
+    };
+    void handleRightButton() override
+    {
+        eh.reboot();
+    };
+};
+class UINeedsSetup : public UIMessageBase
+{
+public:
+    UINeedsSetup(String _text) : UIMessageBase(F("Setup"), _text, F("Setup"), F("Restart"), debug)
+    {
+        log_d("%s", _text);
+    };
+    void handleLeftButton() override
+    {
+        aero_web_portal_setup();
+        close();
     };
     void handleRightButton() override
     {

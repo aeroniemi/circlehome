@@ -1,0 +1,51 @@
+    <html>
+
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    </head>
+
+    <body style="color:#ffffff; background-color: #1f1f1f;">
+        <div style="max-width: 40em;margin-left:auto;margin-right:auto;padding-top:5em;">
+            <h1>CircleHome Settings</h1>
+            <form method="post" action="/submit">
+                <div>
+                    <h2>WiFi</h2>
+                    <div class="form-group">
+                        <label for="wifi_ssid">SSID</label>
+                        <input id="wifi_ssid" name="wifi_ssid" type="text" required="required" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="wifi_password">Password</label>
+                        <input id="wifi_password" name="wifi_password" type="password" class="form-control">
+                    </div>
+                </div>
+                <div>
+                    <h2>Home Assistant</h2>
+                    <div class="form-group">
+                        <label for="ha_hostname">Hostname</label>
+                        <input id="ha_hostname" name="ha_hostname" placeholder="homeassistant.local" type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="ha_port">Port</label>
+                        <input id="ha_port" name="ha_port" placeholder="8123" type="number" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="ha_token">Token</label>
+                        <input id="ha_token" name="ha_token" type="password" class="form-control">
+                    </div>
+                </div>
+                <div>
+                    <h2>Miscellaneous</h2>
+                    <div class="form-group">
+                        <label for="ntp_timezone">Timezone</label>
+                        <input id="ntp_timezone" name="ntp_timezone" placeholder="europe/london" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button name="submit" type="submit" class="btn btn-primary">Apply</button>
+                </div>
+            </form>
+        </div>
+    </body>
+
+    </html>

@@ -1,0 +1,27 @@
+{
+    "name": "Error Handling",
+    "description": "API Handler for Home Assistant",
+    "keywords": "M5Unified",
+    "authors": {
+        "name": "M5Stack, lovyan03",
+        "url": "http://www.m5stack.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/m5stack/M5Unified.git"
+    },
+    "dependencies": {
+        "smfsw/Queue": "1.11"
+    },
+    "version": "0.1.0",
+    "frameworks": [
+        "arduino",
+        "espidf",
+        "*"
+    ],
+    "platforms": [
+        "espressif32",
+        "native"
+    ],
+    "headers": "ha_api.h"
+}

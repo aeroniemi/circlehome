@@ -8,7 +8,8 @@
 // #include "ui/screens/sree.h"
 #include "sys/aero_time.h"
 #include <cppQueue.h>
-#include "sys/error_handling.h"
+#include <aero_error_handling.h>
+#include <aero_web_portal.h>
 HomeAssistant *ha;
 
 Screen *global_screens[] = {
@@ -38,7 +39,7 @@ void setupWifi()
         error_wifi_not_defined.issue();
         return;
     }
-    WiFi.begin(settings.getString("wifi_ssid"),settings.getString("wifi_password"));
+    WiFi.begin(settings.getString("wifi_ssid"), settings.getString("wifi_password"));
     int wifi_time = 0;
     while (WiFi.status() != WL_CONNECTED)
     {
@@ -57,25 +58,31 @@ void setup()
 {
     Serial.begin(115200);
     Serial.setDebugOutput(true);
-    setupPreferences();
     // lv_log_register_print_cb(log_cb);
     m5dial_lvgl_init();
+    setupPreferences();
     M5Dial.Display.setBrightness(70);
     screen_loading.initialize();
     screen_loading.makeActive();
     m5dial_lvgl_next();
-    setupWifi();
-    ha = new HomeAssistant();
-    setupTime();
-    initializeScreens();
-    ha->createEntities();
-    ha->updateAllStates();
     ui_init();
-    screen_clock.makeActive();
+    if (settings.getBool("initialized"))
+    {
+        setupWifi();
+        ha = new HomeAssistant();
+        setupTime();
+        initializeScreens();
+        ha->createEntities();
+        ha->updateAllStates();
+        
+        screen_clock.makeActive();
+    };
 }
 
 void loop()
 {
     m5dial_lvgl_next();
+    if (aero_web_server_enabled)
+        server.handleClient();
     // monitor_sleep();
 }
