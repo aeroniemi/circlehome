@@ -57,9 +57,9 @@ void setup()
 {
     Serial.begin(115200);
     Serial.setDebugOutput(true);
-    setupPreferences();
     // lv_log_register_print_cb(log_cb);
     m5dial_lvgl_init();
+    setupPreferences();
     M5Dial.Display.setBrightness(70);
     screen_loading.initialize();
     screen_loading.makeActive();
