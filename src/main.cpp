@@ -8,7 +8,7 @@
 // #include "ui/screens/sree.h"
 #include "sys/aero_time.h"
 #include <cppQueue.h>
-#include "sys/error_handling.h"
+#include <aero_error_handling.h>
 HomeAssistant *ha;
 
 Screen *global_screens[] = {

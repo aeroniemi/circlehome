@@ -1,4 +1,4 @@
-#include "error_handling.h"
+#include "aero_error_handling.h"
 lv_color_t UIMessageLevelColor[] = {
     lv_palette_main(LV_PALETTE_CYAN),        // info
     lv_palette_main(LV_PALETTE_LIME),        // debug
