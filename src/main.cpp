@@ -16,7 +16,8 @@ Screen *global_screens[] = {
     &screen_on_off,
     &screen_loading,
     &screen_entity_menu,
-    &screen_clock};
+    &screen_clock,
+    &screen_main_menu};
 void log_cb(lv_log_level_t level, const char *buf)
 {
     Serial.println(buf);
@@ -75,7 +76,7 @@ void setup()
         ha->createEntities();
         ha->updateAllStates();
         
-        screen_clock.makeActive();
+        screen_main_menu.makeActive();
     };
 }
 
