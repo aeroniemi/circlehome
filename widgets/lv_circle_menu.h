@@ -1,3 +1,8 @@
+/**
+ * @file lv_btn.h
+ *
+ */
+
 #ifndef LV_CIRCLE_MENU_H
 #define LV_CIRCLE_MENU_H
 
@@ -5,91 +10,78 @@
  *      INCLUDES
  *********************/
 #include <lvgl.h>
+#include <Arduino.h>
+#include "../ui/screens/Screen.h"
 
-/*********************
- *      DEFINES
- *********************/
+    /*********************
+     *      DEFINES
+     *********************/
 
-/**********************
- *      TYPEDEFS
- **********************/
-typedef struct
-{
-    int32_t num_items;
-    int32_t active_item;
-    lv_obj_t obj;
-    int32_t rotation;
-    lv_value_precise_t indic_angle_start;
-    lv_value_precise_t indic_angle_end;
-    lv_value_precise_t bg_angle_start;
-    lv_value_precise_t bg_angle_end;
-    int32_t value;     /*Current value of the arc*/
-    int32_t min_value; /*Minimum value of the arc*/
-    int32_t max_value; /*Maximum value of the arc*/
-    uint32_t dragging : 1;
-    uint32_t type : 2;
-    uint32_t min_close : 1;        /*1: the last pressed angle was closer to minimum end*/
-    uint32_t in_out : 1;           /* 1: The click was within the background arc angles. 0: Click outside */
-    uint32_t chg_rate;             /*Drag angle rate of change of the arc (degrees/sec)*/
-    uint32_t last_tick;            /*Last dragging event timestamp of the arc*/
-    lv_value_precise_t last_angle; /*Last dragging angle of the arc*/
-    int16_t knob_offset;           /*knob offset from the main arc*/
-} lv_cmenu_t;
+    /**********************
+     *      TYPEDEFS
+     **********************/
 
-LV_ATTRIBUTE_EXTERN_DATA extern const lv_obj_class_t lv_arc_class;
+    typedef struct
+    {
+        lv_obj_t obj;
+        uint32_t option_cnt; /**< Number of options*/
+        lv_circle_menu_option_t * options[option_cnt];
+        uint32_t sel_opt_id; /**< Index of the current option*/
+        uint32_t sel_opt_id_ori; /**< Store the original index on focus*/
 
-/**********************
- * GLOBAL PROTOTYPES
- **********************/
+    } lv_circle_menu_t;
 
-/**
- * Create an arc object
- * @param parent    pointer to an object, it will be the parent of the new arc
- * @return          pointer to the created arc
- */
-lv_obj_t *lv_cmenu_create(lv_obj_t *parent);
+    typedef struct
+    {
+        const char * text;
+        const void *image_src;
+        Screen *screen;
+    } lv_circle_menu_option_t;
+    LV_ATTRIBUTE_EXTERN_DATA extern const lv_obj_class_t lv_circle_menu_class;
 
-/*======================
- * Add/remove functions
- *=====================*/
+    /**********************
+     * GLOBAL PROTOTYPES
+     **********************/
 
-/*=====================
- * Setter functions
- *====================*/
-void lv_cmenu_set_active_item(lv_obj_t *obj, int32_t active_item);
-void lv_cmenu_set_num_items(lv_obj_t *obj, int32_t num_items);
-void lv_cmenu_set_change_rate(lv_obj_t *obj, uint32_t rate);
+    /**
+     * Create a circle_menu object
+     * @param parent    pointer to an object, it will be the parent of the new circle_menu
+     * @return          pointer to the created circle_menu
+     */
+    lv_obj_t *lv_circle_menu_create(lv_obj_t *parent);
 
-/*=====================
- * Getter functions
- *====================*/
+    /*=====================
+     * Setter functions
+     *====================*/
 
-int32_t lv_cmenu_get_active_item(const lv_obj_t *obj);
-int32_t lv_cmenu_get_num_items(const lv_obj_t *obj);
-int32_t lv_cmenu_get_change_rate(const lv_obj_t *obj);
+    /**
+     * Set the options on a circle_menu
+     * @param obj       pointer to circle_menu object
+     * @param options   array of options in the lv_circle_menu_option_t struct
+     */
+    void lv_circle_menu_set_options(lv_obj_t *obj, lv_circle_menu_option_t *options[]);
 
-/*=====================
- * Other functions
- *====================*/
+    /**
+     * Set the selected option
+     * @param obj       pointer to a circle_menu object
+     * @param sel_opt   index of the selected option (0 ... number of option - 1);
+     * @param anim   LV_ANIM_ON: set with animation; LV_ANOM_OFF set immediately
+     */
+    void lv_circle_menu_set_selected(lv_obj_t *obj, uint32_t sel_opt, lv_anim_enable_t anim);
 
-/**
- * Align an object to the current position of the arc (knob)
- * @param obj           pointer to an arc object
- * @param obj_to_align  pointer to an object to align
- * @param r_offset      consider the radius larger with this value (< 0: for smaller radius)
- */
-void lv_cmenu_align_obj_to_angle(const lv_obj_t *obj, lv_obj_t *obj_to_align, int32_t r_offset);
+    /*=====================
+     * Getter functions
+     *====================*/
 
-/**
- * Rotate an object to the current position of the arc (knob)
- * @param obj            pointer to an arc object
- * @param obj_to_rotate  pointer to an object to rotate
- * @param r_offset       consider the radius larger with this value (< 0: for smaller radius)
- */
-void lv_cmenu_rotate_obj_to_angle(const lv_obj_t *obj, lv_obj_t *obj_to_rotate, int32_t r_offset);
+    /**
+     * Get the index of the selected option
+     * @param obj       pointer to a circle_menu object
+     * @return          index of the selected option (0 ... number of option - 1);
+     */
+    uint32_t lv_circle_menu_get_selected(const lv_obj_t *obj);
+    
+    /**********************
+     *      MACROS
+     **********************/
 
-/**********************
- *      MACROS
- **********************/
-
-#endif /*LV_ARC_H*/
+#endif /*LV_CIRCLE_MENU_H*/
