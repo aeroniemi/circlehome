@@ -4,16 +4,18 @@
 #include <lvgl.h>
 #include "Screen.h"
 #include <Arduino.h>
-struct Menu_Option {
+struct Menu_Option
+{
     String text;
-    const void * image_src;
-    Screen * screen;
-    // Menu_Option(String text, void *image_src, Screen *screen) : text(text), image_src(image_src), screen(screen);
+    const void *image_src;
+    Screen *screen;
 };
 
 class Screen_Main_Menu : public Screen
 {
     void create();
+    void _create_button(Menu_Option item, int i, int angle, int radius);
+    static void button_handler(lv_event_t *event);
 };
 extern Screen_Main_Menu screen_main_menu;
 #endif
