@@ -5,6 +5,7 @@
 #include "Screen_Entity_Menu.h"
 #include "Screen_Loading.h"
 #include "Screen_On_Off.h"
+#include "Screen_Main_Menu.h"
 
 extern Screen * global_screens[];
 #endif
