@@ -16,6 +16,9 @@ bool handleSetting(String name, String value)
 {
     name.trim();
     value.trim();
+    if (value.length()==0) {
+        return false;
+    }
     if (name.equals("ntp_timezone"))
     {
         const char *tz = lookup_posix_timezone_tz(value.c_str());
