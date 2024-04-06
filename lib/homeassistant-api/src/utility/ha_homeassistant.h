@@ -28,6 +28,7 @@ private:
 public:
     HomeAssistant();
     void getDeviceList();
+    int getNumEntities();
     bool isConnected();
     bool checkServerStatus();
     int triggerService(Entity *entity, String service, JsonDocument data = JsonDocument());
