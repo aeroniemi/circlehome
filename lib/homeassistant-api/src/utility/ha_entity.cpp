@@ -50,67 +50,69 @@ int HomeAssistant::getNumEntities() {
 }
 void HomeAssistant::createEntities()
 {
-#if NETWORKING_ENABLED == 1
-    _httpClient.begin(_host, _port, "/api/states");
-    _httpClient.addHeader("Authorization", _token);
-    int status_code = _httpClient.GET();
-    if (status_code != 200)
+    if (_networking_enabled)
     {
-        log_e("/api/states returned error code %d", status_code);
-        return;
+        _httpClient.begin(_host, _port, "/api/states");
+        _httpClient.addHeader("Authorization", _token);
+        int status_code = _httpClient.GET();
+        if (status_code != 200)
+        {
+            log_e("/api/states returned error code %d", status_code);
+            return;
+        }
+        log_d("Network request underway, code 200");
+        JsonDocument entity_json;
+        WiFiClient http_stream = _httpClient.getStream();
+        http_stream.find("[");
+        do
+        {
+            deserializeJson(entity_json, http_stream);
+            const String entity_id = entity_json["entity_id"];
+            if (entity_id.startsWith("light."))
+            {
+                log_d("Light(%s)", entity_id.c_str());
+                if (!addEntity(new Light(entity_id)))
+                    break;
+            }
+            else if (entity_id.startsWith("switch."))
+            {
+                log_d("Switch(%s)", entity_id.c_str());
+                if (!addEntity(new Switch(entity_id)))
+                    break;
+            }
+            //! cleanup
+        } while (http_stream.findUntil(",", "]"));
+        _httpClient.end();
     }
-    log_d("Network request underway, code 200");
-    JsonDocument entity_json;
-    WiFiClient http_stream = _httpClient.getStream();
-    http_stream.find("[");
-    do
-    {
-        deserializeJson(entity_json, http_stream);
-        const String entity_id = entity_json["entity_id"];
-        if (entity_id.startsWith("light."))
-        {
-            log_d("Light(%s)", entity_id.c_str());
-            if (!addEntity(new Light(entity_id)))
-                break;
-        }
-        else if (entity_id.startsWith("switch."))
-        {
-            log_d("Switch(%s)", entity_id.c_str());
-            if (!addEntity(new Switch(entity_id)))
-                break;
-        }
-        //! cleanup
-    } while (http_stream.findUntil(",", "]"));
-    _httpClient.end();
-#endif
 }
 void HomeAssistant::updateAllStates()
 {
-#if NETWORKING_ENABLED == 1
-    _httpClient.begin(_host, _port, "/api/states");
-    _httpClient.addHeader("Authorization", _token);
-    int status_code = _httpClient.GET();
-    if (status_code != 200)
+    if (_networking_enabled)
     {
-        log_e("/api/states returned error code %d", status_code);
-        return;
-    }
-    log_d("Network request underway, code 200");
-    JsonDocument entity_json;
-    WiFiClient http_stream = _httpClient.getStream();
-    http_stream.find("[");
-    do
-    {
-        deserializeJson(entity_json, http_stream);
-        Entity *entity = getEntityByIdentifier(entity_json["entity_id"].as<String>());
-        if (entity != nullptr)
+        _httpClient.begin(_host, _port, "/api/states");
+        _httpClient.addHeader("Authorization", _token);
+        int status_code = _httpClient.GET();
+        if (status_code != 200)
         {
-            entity->updateStateFromJSON(entity_json);
+            log_e("/api/states returned error code %d", status_code);
+            return;
         }
-        //! cleanup
-    } while (http_stream.findUntil(",", "]"));
-    _httpClient.end();
-#endif
+        log_d("Network request underway, code 200");
+        JsonDocument entity_json;
+        WiFiClient http_stream = _httpClient.getStream();
+        http_stream.find("[");
+        do
+        {
+            deserializeJson(entity_json, http_stream);
+            Entity *entity = getEntityByIdentifier(entity_json["entity_id"].as<String>());
+            if (entity != nullptr)
+            {
+                entity->updateStateFromJSON(entity_json);
+            }
+            //! cleanup
+        } while (http_stream.findUntil(",", "]"));
+        _httpClient.end();
+    }
 }
 Entity *HomeAssistant::getActiveEntity()
 {
