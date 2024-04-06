@@ -1,8 +1,8 @@
 #include "../ha_api.h"
 #include "ha_ui.h"
 
-
-String HomeAssistant::getRollerString(String domain) {
+String HomeAssistant::getRollerString(String domain)
+{
     String roller = "";
     log_d("Starting roller string");
     for (int i = 0; i < _definedEntities; i++)
@@ -18,5 +18,9 @@ String HomeAssistant::getRollerString(String domain) {
         }
     }
     roller.trim();
+    if (roller.length() == 0)
+    {
+        roller = F("No Entities found");
+    }
     return roller;
 }

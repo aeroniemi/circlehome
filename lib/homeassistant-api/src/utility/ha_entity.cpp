@@ -45,6 +45,9 @@ void Entity::updateStateFromJSON(JsonDocument data)
     _friendly_name = data["attributes"]["friendly_name"].as<String>();
     log_d("FN: %s", _friendly_name);
 }
+int HomeAssistant::getNumEntities() {
+    return _definedEntities;
+}
 void HomeAssistant::createEntities()
 {
 #if NETWORKING_ENABLED == 1
