@@ -88,7 +88,7 @@ HomeAssistant::HomeAssistant()
     }
     _host = settings.getString("ha_hostname");
     _token = settings.getString("ha_token");
-    _port = settings.getString("ha_port").toInt();
+    _port = settings.getInt("ha_port");
     _httpClient.useHTTP10(true);
     // _httpClient.setReuse(true);
 }

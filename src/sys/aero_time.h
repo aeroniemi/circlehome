@@ -1,5 +1,4 @@
 #include <esp_sntp.h>
-#include <timezonedb_lookup.h>
 #include <WiFi.h>
 #include <M5Dial.h>
 #include <aero_preferences.h>
@@ -19,11 +18,6 @@ inline void setupTime()
     sntp_set_time_sync_notification_cb(sync_time_cb);
     sntp_set_sync_interval(12 * 60 * 60 * 1000UL);
     String timezone = settings.getString("ntp_timezone");
-    const char * tz = lookup_posix_timezone_tz(timezone.c_str());
-    if (tz != nullptr) {
-        configTzTime(tz, NTP_SERVER);
-    } else {
-        //! need to handle invalid TZ string;
-    }
-   
+    String tz = settings.getString("ntp_tz_str");
+    configTzTime(tz.c_str(), NTP_SERVER);
 }

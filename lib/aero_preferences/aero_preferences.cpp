@@ -1,7 +1,7 @@
 #include "aero_preferences.h"
 #include <aero_error_handling.h>
 Preferences settings;
-UINeedsSetup error_needs_setup(F("Settings are not intialized"));
+UINeedsSetup error_needs_setup(F("Settings are not initialized"));
 void setupPreferences()
 {
     log_d("Setting up preferences");

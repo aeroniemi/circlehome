@@ -126,7 +126,6 @@ public:
     void handleLeftButton() override
     {
         aero_web_portal_setup();
-        close();
     };
     void handleRightButton() override
     {
