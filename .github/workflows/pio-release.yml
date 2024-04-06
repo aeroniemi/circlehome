@@ -46,8 +46,8 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v2
-        # env:
-        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
             .pio/build/**/*_merged.bin
