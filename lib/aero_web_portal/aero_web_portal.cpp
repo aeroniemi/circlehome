@@ -1,7 +1,7 @@
 #include "aero_web_portal.h"
 #include <WiFiAP.h>
 #include <aero_preferences.h>
-#include <timezonedb_lookup.h>x
+#include <timezonedb_lookup.h>
 WebServer server(80);
 extern char *html_form;
 const String valid_args[] = {
@@ -10,7 +10,7 @@ bool aero_web_server_enabled = false;
 
 void sendError(String text)
 {
-    server.send(200, "text/plaintext", String("Validation error: " + text));
+    server.send(200, "text/html", String("Validation error: " + text));
 };
 bool handleSetting(String name, String value)
 {
@@ -99,8 +99,8 @@ bool handleSetting(String name, String value)
 
 void sendSuccess()
 {
-    // server.sendHeader("Location", "/success", true);
-    server.send(302, "text/plaintext", "Success");
+    server.sendHeader("Location", "/", true);
+    server.send(302);
 };
 
 
