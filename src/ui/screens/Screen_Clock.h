@@ -22,7 +22,7 @@ class Screen_Clock : public Screen
         date_text = lv_label_create(_lv_screen);
         lv_obj_center(date_text);
         lv_label_set_text(date_text, "Mon 23 Mar");
-        lv_obj_set_style_text_font(date_text, &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(date_text, &noto_26, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_color(date_text, lv_color_white(), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_align(date_text, LV_ALIGN_CENTER, 0, 25);
         addTimer(update_time, 1000);

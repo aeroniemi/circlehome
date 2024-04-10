@@ -43,7 +43,7 @@ class Screen_On_Off : public Screen
         lv_obj_set_align(entity_name, LV_ALIGN_CENTER);
 
         lv_obj_clear_flag(entity_name, LV_OBJ_FLAG_PRESS_LOCK | LV_OBJ_FLAG_CLICK_FOCUSABLE); /// Flags
-        lv_obj_set_style_text_font(entity_name, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(entity_name, &noto_30, LV_PART_MAIN | LV_STATE_DEFAULT);
 
         button = lv_imagebutton_create(_lv_screen);
         lv_imagebutton_set_src(button, LV_IMAGEBUTTON_STATE_RELEASED, NULL, &lightbulb_off, NULL);
