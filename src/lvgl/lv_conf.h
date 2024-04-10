@@ -424,7 +424,7 @@
 #define LV_FONT_CUSTOM_DECLARE  LV_FONT_DECLARE(noto_clock) LV_FONT_DECLARE(noto_16) LV_FONT_DECLARE(noto_26) LV_FONT_DECLARE(noto_30) LV_FONT_DECLARE(noto_48)
 
 /*Always set a default font*/
-#define LV_FONT_DEFAULT &noto__16
+#define LV_FONT_DEFAULT &noto_16
 
 /*Enable handling large font and/or fonts with a lot of characters.
  *The limit depends on the font size, font face and bpp.
