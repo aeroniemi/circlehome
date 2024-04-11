@@ -53,8 +53,8 @@ void UIMessageHandler::createMsgBox()
     lv_obj_set_style_text_align(_text, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_align(_title, LV_ALIGN_CENTER, 0, -80);
     lv_obj_align(_text, LV_ALIGN_CENTER, 0, -20);
-    lv_obj_set_style_text_font(_title, &lv_font_montserrat_30, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(_text, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(_title, &noto_30, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(_text, &noto_16, LV_PART_MAIN | LV_STATE_DEFAULT);
     if (_current_error->left_btn_text.length() > 0)
     {
         _btnLeft = lv_button_create(_background);
