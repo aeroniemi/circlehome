@@ -792,7 +792,7 @@ lv_font_t noto_clock = {
     .underline_thickness = 3,
 #endif
     .dsc = &font_dsc, /*The custom font data. Will be accessed by `get_glyph_bitmap/dsc` */
-    .fallback = &lv_font_montserrat_48,
+    .fallback = NULL,
     .user_data = NULL,
 };
 
