@@ -11,7 +11,8 @@ void Screen_On_Off::arc_handler(lv_timer_t *timer)
     log_d("set brightness on arc to %d", brightness);
     if (ha->getActiveEntity() == nullptr)
         return;
-    dynamic_cast<Light *>(ha->getActiveEntity())->setBrightness(ha, brightness);
+    Light *light = (Light *)ha->getActiveEntity();
+    light->setBrightness(ha, brightness);
 }
 void Screen_On_Off::button_handler(lv_event_t *event)
 {
