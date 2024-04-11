@@ -18,7 +18,7 @@ class Screen_Entity_Menu : public Screen
         lv_obj_set_width(roller, 240);
         lv_obj_set_height(roller, 240);
         lv_obj_set_align(roller, LV_ALIGN_CENTER);
-        lv_obj_set_style_text_font(roller, &lv_font_montserrat_26, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(roller, &noto_26, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_bg_color(roller, lv_color_black(), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_bg_opa(roller, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_border_width(roller, 0, LV_PART_MAIN | LV_STATE_DEFAULT);

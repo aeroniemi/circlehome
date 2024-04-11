@@ -12,6 +12,9 @@ void setupPreferences()
         log_d("Settings need initializing");
         settings.clear();
         settings.putBool("initialized", false);
+        settings.putString("ha_hostname", "homeassistant.local");
+        settings.putString("ntp_timezone", "GMT");
+        settings.putInt("ha_port", 8123);
         error_needs_setup.issue();
     }
     settings.end();
