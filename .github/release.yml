@@ -8,7 +8,7 @@ changelog:
         - feature
     - title: Improvement ✨
       labels:
-        - enhancement
+        - improvement
     - title: Bug Fixes 🐛
       labels:
         - bug
