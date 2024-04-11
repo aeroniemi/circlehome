@@ -7,6 +7,7 @@ class Screen_Settings : public Screen
 {
     void create();
     static void resetDevice(lv_event_t *event);
+    static void configDevice(lv_event_t *event);
 };
 extern Screen_Settings screen_settings;
 
