@@ -7,6 +7,7 @@
 #include "Screen_On_Off.h"
 #include "Screen_Main_Menu.h"
 #include "Screen_Settings.h"
+#include "Screen_Timer.h"
 
 extern Screen * global_screens[];
 #endif
