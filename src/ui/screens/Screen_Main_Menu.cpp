@@ -5,6 +5,7 @@ Menu_Option main_menu_items[] = {
     {"Clock", NULL, &screen_clock},
     {"Devices", NULL, &screen_entity_menu},
     {"Loading", NULL, &screen_loading},
+    {"Timer", NULL, &screen_timer_set},
 };
 
 int angleToX(int angle, int radius)

@@ -20,11 +20,15 @@ Screen *global_screens[] = {
     &screen_clock,
     &screen_main_menu,
     &screen_settings,
-    &screen_timer};
+    &screen_timer_alert,
+    &screen_timer_countdown,
+    &screen_timer_set};
+;
 void log_cb(lv_log_level_t level, const char *buf)
 {
     Serial.println(buf);
 }
+
 void initializeScreens()
 {
     for (uint8_t i = 0; i < sizeof(global_screens) / sizeof(global_screens[0]); i++)
@@ -82,7 +86,7 @@ void setup()
         ha->createEntities();
         ha->updateAllStates();
 
-        screen_timer.makeActive();
+        screen_timer_set.makeActive();
     };
 }
 
