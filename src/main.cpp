@@ -10,6 +10,7 @@
 #include <cppQueue.h>
 #include <aero_error_handling.h>
 #include <aero_web_portal.h>
+#include "classes/Clock.h"
 HomeAssistant *ha;
 
 Screen *global_screens[] = {
@@ -91,4 +92,5 @@ void loop()
     if (aero_web_server_enabled)
         server.handleClient();
     // monitor_sleep();
+    clock_timer.update();
 }
