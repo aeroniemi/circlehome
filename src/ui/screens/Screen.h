@@ -24,8 +24,11 @@ protected:
 
 public:
     Screen(){};
-    inline void makeActive() { lv_screen_load(_lv_screen); };
-    inline bool isActive() { return lv_screen_active() == _lv_screen; };
+    virtual void makeActive() {
+        if (lv_screen_active() != _lv_screen)
+            lv_screen_load(_lv_screen);
+    };
+    virtual bool isActive() { return lv_screen_active() == _lv_screen; };
     void initialize();
     virtual void create() = 0;
     virtual void load(lv_event_t *event) {};
