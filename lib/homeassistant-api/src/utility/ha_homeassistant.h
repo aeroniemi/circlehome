@@ -38,10 +38,10 @@ public:
     JsonDocument sendPostRequestWithResponse(String endpoint, JsonDocument body = JsonDocument());
     Entity *getEntityByIdentifier(String identifier);
     Entity *getEntityByFriendlyName(String friendly_name);
+    Entity *getEntityByIndex(int index);
     bool addEntity(Entity *entity);
     void updateAllStates();
     void createEntities();
-    String getRollerString(String domain);
     Entity *getActiveEntity();
     void setActiveEntity(Entity *entity);
 };

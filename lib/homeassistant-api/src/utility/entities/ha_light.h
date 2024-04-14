@@ -2,7 +2,6 @@
 #define HA_LIGHT
 #include "../ha_entity.h"
 #include "../ha_homeassistant.h"
-#include <lvgl.h>
 class Light : public Entity
 {
 private:
@@ -23,7 +22,6 @@ public:
     int getBrightness(HomeAssistant ha);
     void getColor(HomeAssistant ha);
     void setColor(HomeAssistant ha);
-    lv_obj_t *getEntityPage() { return lv_obj_create(NULL); };
     bool supportsBrightness() { return _mode_brightness; };
     bool supportsRGB() { return _mode_rgb or _mode_rgbw; };
     bool supportsColorTemp() { return _mode_color_temp; };

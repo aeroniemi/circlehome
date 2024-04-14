@@ -14,7 +14,7 @@ bool HomeAssistant::checkServerStatus()
 }
 void HomeAssistant::getDeviceList(){};
 
-Entity * HomeAssistant::getEntityByIdentifier(String identifier)
+Entity *HomeAssistant::getEntityByIdentifier(String identifier)
 {
     for (int i = 0; i < _definedEntities; i++)
     {
@@ -26,7 +26,7 @@ Entity * HomeAssistant::getEntityByIdentifier(String identifier)
     log_w("No Entity with identifier '%s' found", identifier.c_str());
     return nullptr;
 }
-Entity * HomeAssistant::getEntityByFriendlyName(String friendly_name)
+Entity *HomeAssistant::getEntityByFriendlyName(String friendly_name)
 {
     for (int i = 0; i < _definedEntities; i++)
     {
@@ -38,10 +38,17 @@ Entity * HomeAssistant::getEntityByFriendlyName(String friendly_name)
     log_w("No Entity with friendly_name '%s' found", friendly_name.c_str());
     return nullptr;
 }
+Entity *HomeAssistant::getEntityByIndex(int index)
+{
+    if (index < getNumEntities())
+        return _entities[index];
+    return nullptr;
+}
 
 bool HomeAssistant::addEntity(Entity *entity)
 {
-    if (_definedEntities >= HA_MAX_ENTITIES) {
+    if (_definedEntities >= HA_MAX_ENTITIES)
+    {
         log_w("No empty space available");
         return false;
     }

@@ -3,7 +3,6 @@
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include "ha_homeassistant.h"
-#include <lvgl.h>
 class Entity
 {
 private:
@@ -36,6 +35,5 @@ public:
         return ha->triggerService(this, "toggle") == 200;
     }
     // inline bool setBrightness(HomeAssistant *ha, int brightness) { return false; };
-    virtual lv_obj_t *getEntityPage() =0;
 };
 #endif
