@@ -12,7 +12,8 @@
     },
     "dependencies": {
         "M5Dial": "^1.0.2",
-        "smfsw/Queue": "1.11"
+        "smfsw/Queue": "1.11",
+        "bblanchon/ArduinoJson": "^7.0.0"
     },
     "version": "0.1.0",
     "frameworks": [

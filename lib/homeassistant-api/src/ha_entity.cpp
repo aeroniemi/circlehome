@@ -1,6 +1,5 @@
-#include "../ha_api.h"
 #include "ha_entity.h"
-
+#include "entities/list_entities.h"
 Entity::Entity(String identifier)
 {
     _entity_id = identifier;
@@ -45,7 +44,8 @@ void Entity::updateStateFromJSON(JsonDocument data)
     _friendly_name = data["attributes"]["friendly_name"].as<String>();
     log_d("FN: %s", _friendly_name);
 }
-int HomeAssistant::getNumEntities() {
+int HomeAssistant::getNumEntities()
+{
     return _definedEntities;
 }
 void HomeAssistant::createEntities()
@@ -137,3 +137,16 @@ void HomeAssistant::setActiveEntity(Entity *entity)
 //         //!cleanup
 //     } while (http_stream.findUntil(",", "]"));
 // }
+
+bool Entity::turnOn()
+{
+    return ha->triggerService(this, "turn_on") == 200;
+}
+bool Entity::turnOff()
+{
+    return ha->triggerService(this, "turn_off") == 200;
+}
+bool Entity::toggle()
+{
+    return ha->triggerService(this, "toggle") == 200;
+}

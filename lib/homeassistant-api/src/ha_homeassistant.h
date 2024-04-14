@@ -4,7 +4,7 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <WiFi.h>
-// #include "ha_entity.h"
+#include "ha_entity.h"
 
 #ifndef HA_MAX_ENTITIES
 #define HA_MAX_ENTITIES 30

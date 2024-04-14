@@ -22,18 +22,9 @@ public:
     void updateIfRequired();
     String getFriendlyName();
     void updateStateFromJSON(JsonDocument data);
-    inline bool turnOn(HomeAssistant *ha)
-    {
-        return ha->triggerService(this, "turn_on") == 200;
-    }
-    inline bool turnOff(HomeAssistant *ha)
-    {
-        return ha->triggerService(this, "turn_off") == 200;
-    }
-    inline bool toggle(HomeAssistant *ha)
-    {
-        return ha->triggerService(this, "toggle") == 200;
-    }
-    // inline bool setBrightness(HomeAssistant *ha, int brightness) { return false; };
+    bool turnOn();
+    bool turnOff();
+    bool toggle();
+    // inline bool setBrightness(int brightness) { return false; };
 };
 #endif

@@ -1,6 +1,6 @@
 #ifndef HA_BASICS
 #define HA_BASICS
-#include "../ha_api.h"
+#include "ha_homeassistant.h"
 
 bool HomeAssistant::checkServerStatus()
 {

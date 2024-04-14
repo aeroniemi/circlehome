@@ -1,9 +1,10 @@
 
-#include "../ha_api.h"
+#include "ha_homeassistant.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <aero_preferences.h>
+#include <aero_error_handling.h>
 
 UIError error_no_home_assistant(F("Cannot connect to HomeAssistant"));
 UIError error_auth_home_assistant(F("Authentication with HomeAssistant failed - check token"));
