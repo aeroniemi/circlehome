@@ -24,6 +24,7 @@ class Screen_Timer_Countdown : public Screen_Timer
 {
 public:
     lv_obj_t *_arc;
+    lv_obj_t *_text;
     void create();
     void update(lv_timer_t *timer) override;
 };

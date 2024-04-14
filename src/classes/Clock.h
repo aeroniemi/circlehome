@@ -34,7 +34,8 @@ public:
         M5Dial.Speaker.tone(640, 2 * 60 * 1000, 1);
         M5Dial.Speaker.setVolume(55);
     };
-    Clock_State getState() {
+    Clock_State getState()
+    {
         return _state;
     }
     void clear()
@@ -43,6 +44,17 @@ public:
         M5Dial.Speaker.stop(1);
     }
     virtual void update() = 0;
+    String formatTime(time_t time)
+    {
+        int hours = time / 3600;
+        int minutes = (time % 3600) / 60;
+        int seconds = time % 60;
+
+        log_d("%d %d %d", hours, minutes, seconds);
+        char output[9];
+        sprintf(output, "%02d:%02d:%02d", hours, minutes, seconds);
+        return String(output); 
+    };
 };
 class Clock_Alarm : public Clock
 {
@@ -54,21 +66,28 @@ public:
 class Clock_Timer : public Clock
 {
 public:
-    uint16_t length_ms;
+    uint16_t length_seconds;
     uint16_t getTimerLength()
     {
-        return length_ms;
+        return length_seconds;
     }
-    String getTimerLengthFormatted();
+    String getTimerLengthFormatted()
+    {
+        return formatTime(getTimerLength());
+    }
+    String getTimeRemainingFormatted()
+    {
+        return formatTime(getSecondsRemaining());
+    };
     void setTimer(String str_time = "12:34:56")
     {
         int hours = str_time.substring(0, 2).toInt();
         int minutes = str_time.substring(3, 5).toInt();
         int seconds = str_time.substring(6, 8).toInt();
         log_d("H %d M %d S %d", hours, minutes, seconds);
-        length_ms = (hours * 60 * 60) + (minutes * 60) + seconds;
+        length_seconds = (hours * 60 * 60) + (minutes * 60) + seconds;
         time_t now = time(&now);
-        expire_time = now + length_ms;
+        expire_time = now + length_seconds;
         _state = Active;
     }
     time_t getSecondsRemaining()
