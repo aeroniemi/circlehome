@@ -27,6 +27,10 @@ private:
 
 public:
     HomeAssistant();
+    HomeAssistant(String token, String host, int port);
+    bool setToken(String token);
+    bool setHost(String host);
+    bool setPort(int port);
     void getDeviceList();
     int getNumEntities();
     bool isConnected();
@@ -44,6 +48,9 @@ public:
     void createEntities();
     Entity *getActiveEntity();
     void setActiveEntity(Entity *entity);
+    bool setup(String token, String host, int port);
+    bool isSetup();
+    void init();
 };
 extern HomeAssistant *ha;
 

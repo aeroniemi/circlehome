@@ -63,5 +63,33 @@ int HomeAssistant::triggerService(Entity *entity, String service, JsonDocument d
     int response = sendPostRequest(String("/api/services/" + entity->getDomain() + "/" + service), data);
     return response;
 }
-
+bool HomeAssistant::setToken(String token)
+{
+    _token = token;
+    return true;
+};
+bool HomeAssistant::setHost(String host)
+{
+    _host = host;
+    return true;
+};
+bool HomeAssistant::setPort(int port)
+{
+    _port = port;
+    return true;
+};
+bool HomeAssistant::setup(String token, String host, int port)
+{
+    return setToken(token) && setHost(host) && setPort(port);
+};
+bool HomeAssisant::isSetup()
+{
+    if (_token == "")
+        return false;
+    if (_host == "")
+        return false;
+    if (port == 0)
+        return false;
+    return true;
+}
 #endif
