@@ -82,13 +82,13 @@ bool HomeAssistant::setup(String token, String host, int port)
 {
     return setToken(token) && setHost(host) && setPort(port);
 };
-bool HomeAssisant::isSetup()
+bool HomeAssistant::isSetup()
 {
     if (_token == "")
         return false;
     if (_host == "")
         return false;
-    if (port == 0)
+    if (_port == 0)
         return false;
     return true;
 }
