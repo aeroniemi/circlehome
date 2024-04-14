@@ -12,16 +12,16 @@ private:
 
 public:
     using Entity::Entity;
-    bool getState(HomeAssistant ha);
-    inline bool setBrightness(HomeAssistant* ha, int brightness)
+    bool getState();
+    inline bool setBrightness(int brightness)
     {
         JsonDocument request;
         request["brightness"] = brightness;
         return ha->triggerService(this, "turn_on", request) == 200;
     };
-    int getBrightness(HomeAssistant ha);
-    void getColor(HomeAssistant ha);
-    void setColor(HomeAssistant ha);
+    int getBrightness();
+    void getColor();
+    void setColor();
     bool supportsBrightness() { return _mode_brightness; };
     bool supportsRGB() { return _mode_rgb or _mode_rgbw; };
     bool supportsColorTemp() { return _mode_color_temp; };

@@ -12,12 +12,12 @@ void Screen_On_Off::arc_handler(lv_timer_t *timer)
     if (ha->getActiveEntity() == nullptr)
         return;
     Light *light = (Light *)ha->getActiveEntity();
-    light->setBrightness(ha, brightness);
+    light->setBrightness(brightness);
 }
 void Screen_On_Off::button_handler(lv_event_t *event)
 {
     Screen_On_Off *screen = (Screen_On_Off *)event->user_data;
     ha->getActiveEntity()
-        ->toggle(ha);
+        ->toggle();
 }
 Screen_On_Off screen_on_off;
