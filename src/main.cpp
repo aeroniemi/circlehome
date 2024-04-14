@@ -71,7 +71,10 @@ void setup()
     if (settings.getBool("initialized"))
     {
         setupWifi();
-        ha = new HomeAssistant();
+        ha = new HomeAssistant(
+            settings.getString("ha_hostname"),
+            settings.getString("ha_token"),
+            settings.getInt("ha_port"));
         setupTime();
         initializeScreens();
         ha->createEntities();
