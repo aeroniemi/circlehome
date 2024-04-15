@@ -28,7 +28,7 @@ void Screen_Timer_Countdown::create()
     lv_obj_set_style_arc_opa(_arc, 255, LV_PART_INDICATOR | LV_STATE_DEFAULT);
     lv_obj_set_style_arc_rounded(_arc, false, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
-    lv_obj_t *_text = lv_label_create(_lv_screen);
+    _text = lv_label_create(_lv_screen);
     lv_obj_center(_text);
     lv_label_set_text(_text, "");
     lv_obj_set_style_text_font(_text, &noto_30, LV_PART_MAIN | LV_STATE_DEFAULT);
