@@ -2,6 +2,7 @@
 #include <M5Dial-LVGL.h>
 #include <lvgl.h>
 #include "ui.h"
+#include <aero_error_handling.h>
 
 static void return_to_menu_cb(lv_event_t *e) {
     screen_main_menu.makeActive();
