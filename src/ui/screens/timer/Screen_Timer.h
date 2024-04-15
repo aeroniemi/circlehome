@@ -16,7 +16,9 @@ public:
 class Screen_Timer_Alert : public Screen_Timer
 {
 public:
-    static void set_bg_color(void *obj, int32_t v);
+    bool lit;
+    static void set_bg_color(lv_timer_t * timer);
+    static void clickHandler(lv_event_t *event);
     void create();
     void update(lv_timer_t *timer) override;
 };
