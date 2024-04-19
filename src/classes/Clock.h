@@ -32,7 +32,8 @@ public:
     {
         _state = Alert;
         M5Dial.Speaker.tone(640, 2 * 60 * 1000, 1);
-        M5Dial.Speaker.setVolume(55);
+        M5Dial.Speaker.setVolume(255);
+        M5Dial.Display.setBrightness(255);
     };
     Clock_State getState()
     {
@@ -42,6 +43,7 @@ public:
     {
         _state = Cleared;
         M5Dial.Speaker.stop(1);
+        M5Dial.Display.setBrightness(70);
     }
     virtual void update() = 0;
     String formatTime(time_t time)
@@ -84,6 +86,17 @@ public:
         int hours = str_time.substring(0, 2).toInt();
         int minutes = str_time.substring(3, 5).toInt();
         int seconds = str_time.substring(6, 8).toInt();
+        log_d("H %d M %d S %d", hours, minutes, seconds);
+        length_seconds = (hours * 60 * 60) + (minutes * 60) + seconds;
+        time_t now = time(&now);
+        expire_time = now + length_seconds;
+        _state = Active;
+    }
+    void setTimer(char cHours[3], char cMinutes[3], char cSeconds[3])
+    {
+        int hours = atoi(cHours);
+        int minutes = atoi(cMinutes);
+        int seconds = atoi(cSeconds);
         log_d("H %d M %d S %d", hours, minutes, seconds);
         length_seconds = (hours * 60 * 60) + (minutes * 60) + seconds;
         time_t now = time(&now);

@@ -29,13 +29,24 @@ void Screen_Timer_Countdown::create()
     lv_obj_set_style_arc_rounded(_arc, false, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     _text = lv_label_create(_lv_screen);
-    lv_obj_center(_text);
+    lv_obj_align(_text, LV_ALIGN_CENTER, 0, -20);
     lv_label_set_text(_text, "");
     lv_obj_set_style_text_font(_text, &noto_30, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(_text, lv_color_white(), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_timer_set_period(_updateTimer, 30);
+
+    lv_obj_t *cancel = lv_btn_create(_lv_screen);
+    lv_obj_align(cancel, LV_ALIGN_CENTER, 0, 60);
+    lv_obj_t *label = lv_label_create(cancel);
+    lv_label_set_text(label, "Cancel");
+    lv_obj_set_style_text_font(label, &noto_26, LV_PART_MAIN);
+    lv_obj_center(label);
+    lv_obj_add_event_cb(cancel, cancel_handler, LV_EVENT_SHORT_CLICKED, this);
 }
 
+void Screen_Timer_Countdown::cancel_handler(lv_event_t *event) {
+    clock_timer.clear();
+}
 void Screen_Timer_Countdown::update(lv_timer_t *timer)
 {
     Screen_Timer::update(timer);
