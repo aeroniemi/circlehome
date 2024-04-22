@@ -35,7 +35,7 @@ void Screen_Timer_Countdown::create()
     lv_obj_set_style_text_color(_text, lv_color_white(), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_timer_set_period(_updateTimer, 30);
 
-    lv_obj_t *cancel = lv_btn_create(_lv_screen);
+    lv_obj_t *cancel = lv_button_create(_lv_screen);
     lv_obj_align(cancel, LV_ALIGN_CENTER, 0, 60);
     lv_obj_t *label = lv_label_create(cancel);
     lv_label_set_text(label, "Cancel");
