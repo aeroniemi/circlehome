@@ -12,7 +12,7 @@ void Screen_Timer_Set::create()
     lv_obj_align(hoursRoller, LV_ALIGN_CENTER, -60, -20);
     lv_obj_align(minutesRoller, LV_ALIGN_CENTER, 0, -20);
     lv_obj_align(secondsRoller, LV_ALIGN_CENTER, 60, -20);
-    lv_obj_t *start = lv_btn_create(_lv_screen);
+    lv_obj_t *start = lv_button_create(_lv_screen);
     lv_obj_align(start, LV_ALIGN_CENTER, 0, 80);
     lv_obj_t *label = lv_label_create(start);
     lv_label_set_text(label, "Start");
