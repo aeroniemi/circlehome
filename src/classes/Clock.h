@@ -28,13 +28,7 @@ public:
     {
         return _state == Active;
     };
-    void alert()
-    {
-        _state = Alert;
-        M5Dial.Speaker.tone(640, 2 * 60 * 1000, 1);
-        M5Dial.Speaker.setVolume(255);
-        M5Dial.Display.setBrightness(255);
-    };
+    void alert();
     Clock_State getState()
     {
         return _state;
@@ -52,7 +46,6 @@ public:
         int minutes = (time % 3600) / 60;
         int seconds = time % 60;
 
-        log_d("%d %d %d", hours, minutes, seconds);
         char output[9];
         sprintf(output, "%02d:%02d:%02d", hours, minutes, seconds);
         return String(output); 
@@ -86,7 +79,6 @@ public:
         int hours = str_time.substring(0, 2).toInt();
         int minutes = str_time.substring(3, 5).toInt();
         int seconds = str_time.substring(6, 8).toInt();
-        log_d("H %d M %d S %d", hours, minutes, seconds);
         length_seconds = (hours * 60 * 60) + (minutes * 60) + seconds;
         time_t now = time(&now);
         expire_time = now + length_seconds;
@@ -97,7 +89,6 @@ public:
         int hours = atoi(cHours);
         int minutes = atoi(cMinutes);
         int seconds = atoi(cSeconds);
-        log_d("H %d M %d S %d", hours, minutes, seconds);
         length_seconds = (hours * 60 * 60) + (minutes * 60) + seconds;
         time_t now = time(&now);
         expire_time = now + length_seconds;
@@ -113,8 +104,7 @@ public:
         if (isCleared())
             return;
         time_t current_time = time(&current_time);
-        log_d("Now: %d Expire: %d Seconds: %d", current_time, expire_time, getSecondsRemaining());
-
+        
         if (getSecondsRemaining() <= 0)
         {
             if (!isAlert())
