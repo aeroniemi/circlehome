@@ -13,7 +13,7 @@ class Screen_Entity_Menu : public Screen
         roller = lv_roller_create(_lv_screen);
         lv_group_add_obj(_lv_group, roller);
         lv_group_set_editing(_lv_group, true);
-        lv_roller_set_options(roller, generateRollerString("light"), LV_ROLLER_MODE_INFINITE);
+        lv_roller_set_options(roller, generateRollerString("light").c_str(), LV_ROLLER_MODE_INFINITE);
         lv_obj_set_style_anim_duration(roller, 10, LV_PART_MAIN);
         lv_obj_set_width(roller, 240);
         lv_obj_set_height(roller, 240);
@@ -29,7 +29,7 @@ class Screen_Entity_Menu : public Screen
         lv_obj_add_event_cb(roller, roller_handler, LV_EVENT_VALUE_CHANGED, NULL);
     }
     static void roller_handler(lv_event_t *event);
-    const char * generateRollerString(String domain) {
+    String generateRollerString(String domain) {
         String roller = "";
         log_d("Starting roller string");
         for (int i = 0; i < ha->getNumEntities(); i++)
@@ -47,7 +47,7 @@ class Screen_Entity_Menu : public Screen
         {
             roller = F("No Entities found");
         }
-        return roller.c_str();
+        return roller;
     }
 };
 extern Screen_Entity_Menu screen_entity_menu;
