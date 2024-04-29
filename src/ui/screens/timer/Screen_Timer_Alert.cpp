@@ -12,7 +12,7 @@ void Screen_Timer_Alert::set_bg_color(lv_timer_t *timer)
     else
     {
         screen->lit = true;
-        lv_palette_main(LV_PALETTE_RED);
+        color = lv_palette_main(LV_PALETTE_RED);
     };
     lv_obj_set_style_bg_color(screen->_lv_screen, color, LV_PART_MAIN);
 };
