@@ -86,7 +86,7 @@ void setup()
         ha->createEntities();
         ha->updateAllStates();
 
-        screen_timer_set.makeActive();
+        screen_main_menu.makeActive();
     };
 }
 
