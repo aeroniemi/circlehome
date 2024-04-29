@@ -10,7 +10,10 @@ public:
     void updateScreenState();
     void update(lv_timer_t *timer)
     {
-        updateScreenState();
+        if (this->isActive())
+        {
+            updateScreenState();
+        };
     }
 };
 class Screen_Timer_Alert : public Screen_Timer
