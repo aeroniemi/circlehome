@@ -45,7 +45,7 @@ jobs:
             .pio/build/**/*_merged.bin
       - run: |
             mkdir -p _site/firmware
-            cp .pio/build/m5knob/firmware_merged.bin _site/firmware/esp32s3.bin
+            cp .pio/build/m5knob/firmware_merged.bin _site/firmware/esp32-s3.bin
             cp manifest.json _site/firmware/manifest.json
             cp static/* _site/
       - name: Create GitHub Pages assets
