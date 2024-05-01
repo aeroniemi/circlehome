@@ -44,7 +44,7 @@ jobs:
           path: |
             .pio/build/**/*_merged.bin
       - run: |
-            mkdir _site/firmware
+            mkdir -p _site/firmware
             cp .pio/build/m5knob/firmware_merged.bin _site/firmware/esp32s3.bin
             cp manifest.json _site/firmware/manifest.json
             cp static/* _site/
