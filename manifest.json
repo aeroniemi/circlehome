@@ -1,0 +1,17 @@
+{
+    "name": "CircleHome",
+    "version": "v1",
+    "home_assistant_domain": "circlehome",
+    "new_install_prompt_erase": true,
+    "builds": [
+        {
+            "chipFamily": "ESP32-S3",
+            "parts": [
+                {
+                    "path": "esp32-s3.bin",
+                    "offset": 0
+                }
+            ]
+        }
+    ]
+}
