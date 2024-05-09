@@ -4,21 +4,7 @@ Preferences settings;
 UINeedsSetup error_needs_setup(F("Settings are not initialized"));
 void setupPreferences()
 {
-    log_d("Setting up preferences");
-    settings.begin("settings", false);
-
-    if (!settings.getBool("initialized"))
-    {
-        log_d("Settings need initializing");
-        settings.clear();
-        settings.putBool("initialized", false);
-        settings.putString("ha_hostname", "homeassistant.local");
-        settings.putString("ntp_timezone", "GMT");
-        settings.putInt("ha_port", 8123);
-        error_needs_setup.issue();
-    }
-    settings.end();
-   
+    log_d("Setting up preferences");   
     settings.begin("settings", true);
 }
 void resetPreferences()
@@ -29,4 +15,13 @@ void resetPreferences()
     settings.clear();
     settings.end();
     setupPreferences();
+}
+
+void storeImprovSettings(const char *ssid, const char *password) {
+    settings.end();
+    settings.begin("settings", false);
+    settings.putString("wifi_ssid", ssid);
+    settings.putString("wifi_password", password);
+    settings.end();
+    settings.begin("settings", true);
 }

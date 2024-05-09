@@ -17,7 +17,7 @@ inline void setupTime()
     sntp_set_sync_mode(SNTP_SYNC_MODE_IMMED);
     sntp_set_time_sync_notification_cb(sync_time_cb);
     sntp_set_sync_interval(12 * 60 * 60 * 1000UL);
-    String timezone = settings.getString("ntp_timezone");
-    String tz = settings.getString("ntp_tz_str");
+    String timezone = settings.getString("ntp_timezone", "GMT");
+    String tz = settings.getString("ntp_tz_str", "GMT0");
     configTzTime(tz.c_str(), NTP_SERVER);
 }
