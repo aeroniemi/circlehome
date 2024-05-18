@@ -11,6 +11,9 @@
 #include <aero_error_handling.h>
 #include <aero_web_portal.h>
 #include "classes/Clock.h"
+#include <ImprovWiFiLibrary.h>
+
+ImprovWiFi improvSerial(&Serial);
 HomeAssistant *ha;
 
 Screen *global_screens[] = {
@@ -39,62 +42,70 @@ void initializeScreens()
 UIError error_wifi_not_defined(F("No Wifi credentials are set"));
 UIError error_no_wifi(F("Credentials are set, but cannot connect to the WiFi network"));
 #define WIFI_TIMEOUT 5000
-void setupWifi()
+void setupWifi(void *params)
 {
-    Serial.println("Connecting to Wifi...");
-    if (!settings.isKey("wifi_ssid") || !settings.isKey("wifi_password"))
+    if (settings.isKey("wifi_ssid"))
     {
-        error_wifi_not_defined.issue();
-        return;
-    }
-    WiFi.begin(settings.getString("wifi_ssid"), settings.getString("wifi_password"));
-    int wifi_time = 0;
-    while (WiFi.status() != WL_CONNECTED)
-    {
-        if (wifi_time > WIFI_TIMEOUT)
+        String ssid = settings.getString("wifi_ssid", "");
+        String password = settings.getString("wifi_password", "");
+        if (ssid.length() > 0 && password.length() > 0)
         {
-            error_no_wifi.issue();
-            return;
+            improvSerial.tryConnectToWifi(ssid.c_str(), password.c_str());
         }
-        delay(500);
-        wifi_time += 500;
     }
-    Serial.println("Connected to Wifi");
+    vTaskDelete(NULL);
 }
-
+bool initialized = false;
 void setup()
 {
     Serial.begin(115200);
-    Serial.setDebugOutput(true);
-    // lv_log_register_print_cb(log_cb);
-    m5dial_lvgl_init();
     setupPreferences();
+    xTaskCreatePinnedToCore(
+        setupWifi,   /* Function to implement the task */
+        "setupWifi", /* Name of the task */
+        10000,       /* Stack size in words */
+        NULL,        /* Task input parameter */
+        0,           /* Priority of the task */
+        NULL,        /* Task handle. */
+        0);          /* Core where the task should run */
+    improvSerial.onImprovConnected(*storeImprovSettings);
+    improvSerial.setDeviceInfo(ImprovTypes::ChipFamily::CF_ESP32_S3, "CircleHome", "1.0.0", "My Device");
+    Serial.setDebugOutput(true);
+    m5dial_lvgl_init();
     M5Dial.Display.setBrightness(70);
     screen_loading.initialize();
     screen_loading.makeActive();
     m5dial_lvgl_next();
     ui_init();
-    if (settings.getBool("initialized"))
-    {
-        setupWifi();
-        ha = new HomeAssistant(
-            settings.getString("ha_hostname"),
-            settings.getString("ha_token"),
-            settings.getInt("ha_port"));
-        setupTime();
-        initializeScreens();
-        ha->createEntities();
-        ha->updateAllStates();
-
-        screen_main_menu.makeActive();
-    };
+    setupTime();
 }
 
 void loop()
 {
+    improvSerial.handleSerial();
     m5dial_lvgl_next();
     if (aero_web_server_enabled)
         server.handleClient();
     // monitor_sleep();
-    clock_timer.update();
+    if (initialized)
+    {
+        clock_timer.update();
+    }
+    else
+    {
+        if (improvSerial.isConnected())
+        {
+            log_d("Connected, continue");
+            ha = new HomeAssistant(
+                settings.getString("ha_hostname", "homeasssistant.local"),
+                settings.getString("ha_token", ""),
+                settings.getInt("ha_port", 8123));
+
+            initializeScreens();
+            ha->createEntities();
+            ha->updateAllStates();
+            screen_main_menu.makeActive();
+            initialized = true;
+        }
+    };
 }
