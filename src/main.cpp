@@ -78,14 +78,14 @@ void setup()
     m5dial_lvgl_next();
     ui_init();
     setupTime();
+    aero_web_portal_setup();
 }
 
 void loop()
 {
     improvSerial.handleSerial();
     m5dial_lvgl_next();
-    if (aero_web_server_enabled)
-        server.handleClient();
+    server.handleClient();
     // monitor_sleep();
     if (initialized)
     {
