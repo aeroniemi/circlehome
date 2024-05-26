@@ -3,7 +3,7 @@
 #include <cppQueue.h>
 #include <Arduino.h>
 #include <lvgl.h>
-#include <aero_web_portal.h>
+// #include <aero_web_portal.h>
 #define ERROR_BUTTON_LEFT 0
 #define ERROR_BUTTON_RIGHT 1
 enum UIMessageLevel
@@ -125,7 +125,7 @@ public:
     };
     void handleLeftButton() override
     {
-        aero_web_portal_setup();
+        // aero_web_portal_setup();
     };
     void handleRightButton() override
     {
