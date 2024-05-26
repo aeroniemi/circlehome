@@ -9,12 +9,12 @@
 #include "sys/aero_time.h"
 #include <cppQueue.h>
 #include <aero_error_handling.h>
-#include <aero_web_portal.h>
 #include "classes/Clock.h"
 #include <ImprovWiFiLibrary.h>
 
 ImprovWiFi improvSerial(&Serial);
 HomeAssistant *ha;
+WebServer server(80);
 
 Screen *global_screens[] = {
     &screen_on_off,
@@ -55,6 +55,32 @@ void setupWifi(void *params)
     }
     vTaskDelete(NULL);
 }
+
+void setup_web_server()
+{
+    server.on("/", []()
+              { server.sendHeader("Location", String("http://homeassistant.local:8123/auth/authorize?client_id=http%3A%2F%2F" + WiFi.localIP().toString() + "&redirect_uri=http%3A%2F%2F" + WiFi.localIP().toString() + "/auth_callback"), true);
+                                  server.send(302, "text/plain", ""); });
+    server.on("/auth_callback", []()
+              {
+         for (int i = 0; i < server.args(); i++)
+    {
+        log_d("%s, %s", server.argName(i), server.arg(i));
+        if (server.argName(i).equals("code")) {
+            String access_code = server.arg(i);
+            String refresh_token = ha->requestRefreshToken(access_code);
+            if (refresh_token.length()==0) {
+                log_d("Error getting refresh token");
+                //error
+            };
+            settings.putString("ha_refresh", refresh_token);
+            // ESP.restart();
+        };
+    };
+
+    server.send(200, "text/plain", "Success"); });
+    server.begin();
+};
 bool initialized = false;
 void setup()
 {
@@ -78,7 +104,7 @@ void setup()
     m5dial_lvgl_next();
     ui_init();
     setupTime();
-    aero_web_portal_setup();
+    setup_web_server();
 }
 
 void loop()

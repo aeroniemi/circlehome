@@ -1,5 +1,5 @@
 #include <aero_preferences.h>
-#include <aero_web_portal.h>
+// #include <aero_web_portal.h>
 #include "Screen_Settings.h"
 void Screen_Settings::resetDevice(lv_event_t *event)
 {
@@ -8,7 +8,7 @@ void Screen_Settings::resetDevice(lv_event_t *event)
 }
 void Screen_Settings::configDevice(lv_event_t *event)
 {
-    aero_web_portal_setup();
+    // aero_web_portal_setup();
 }
 void Screen_Settings::create() {
     lv_obj_t *reset_button = lv_button_create(_lv_screen);
