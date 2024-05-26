@@ -9,7 +9,8 @@ void Screen_Entity_Menu::roller_handler(lv_event_t *event)
     };
     char friendlyName[40];
     lv_roller_get_selected_str(screen->roller, friendlyName, 40);
-    ha->setActiveEntity(ha->getEntityByFriendlyName(friendlyName));
+    if (strcmp(friendlyName, "No Entities found"))
+        ha->setActiveEntity(ha->getEntityByFriendlyName(friendlyName));
     //! no longer exists lv_screen_load(ha->getActiveEntity()->getEntityPage());
 
     // log_d("Active Entity: %s", ha->getActiveEntity()->getIdentifier().c_str());
