@@ -13,6 +13,7 @@
 #include <ImprovWiFiLibrary.h>
 #include <WiFi.h>
 #include <WebServer.h>
+#include <timezonedb_lookup.h>
 ImprovWiFi improvSerial(&Serial);
 HomeAssistant has;
 HomeAssistant *ha = &has;
@@ -33,6 +34,16 @@ void log_cb(lv_log_level_t level, const char *buf)
 {
     Serial.println(buf);
 }
+void update_timezone() {
+    String timezone = ha->getTimezone();
+    log_d("Timezone: %s", timezone);
+    if (timezone.length() ==0)
+        return;
+    String tz = lookup_posix_timezone_tz(timezone.c_str());
+    settings.putString("ntp_timezone", timezone);
+    settings.putString("ntp_tz_str", tz);
+    setupTime();
+};
 
 void initializeScreens()
 {
@@ -125,7 +136,7 @@ void loop()
         clock_timer.update();
         // log_d("HA is setup? %d %s", ha->isSetup(), settings.getString("ha_refresh", "none"));
         if (ha->isSetup() and not initialized_ha)
-        {
+        {   
             log_d("Initializing HA");   
             ha->createEntities();
             ha->updateAllStates();
@@ -141,6 +152,7 @@ void loop()
             log_d("access token: '%s'", ha->getToken().c_str());
             initializeScreens();
             screen_main_menu.makeActive();
+            update_timezone();
             initialized = true;
         }
     };
