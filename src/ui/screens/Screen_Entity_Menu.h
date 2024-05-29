@@ -48,7 +48,11 @@ class Screen_Entity_Menu : public Screen
             roller = F("No Entities found");
         }
         return roller;
-    }
+    };
+    void load(lv_event_t *event) {
+        log_d("Loading Entities menu");
+        lv_roller_set_options(roller, generateRollerString("light").c_str(), LV_ROLLER_MODE_INFINITE);
+    };
 };
 extern Screen_Entity_Menu screen_entity_menu;
 #endif
