@@ -48,13 +48,6 @@ jobs:
             cp .pio/build/m5knob/firmware_merged.bin _site/firmware/esp32-s3.bin
             cp manifest.json _site/firmware/manifest.json
             cp static/* _site/
-
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: firmware
-          path: |
-            .pio/build/**/*_merged.bin
       - name: Create GitHub Pages assets
         uses: actions/upload-pages-artifact@v3
       - name: Release
