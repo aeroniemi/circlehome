@@ -26,6 +26,7 @@ public:
     Screen(){};
     virtual void makeActive() {
         if (lv_screen_active() != _lv_screen)
+            load(NULL);
             lv_screen_load(_lv_screen);
     };
     virtual bool isActive() { return lv_screen_active() == _lv_screen; };

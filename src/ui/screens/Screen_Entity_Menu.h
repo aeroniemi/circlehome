@@ -26,8 +26,9 @@ class Screen_Entity_Menu : public Screen
         lv_obj_set_style_bg_color(roller, lv_color_hex(0x4055A4), LV_PART_SELECTED | LV_STATE_DEFAULT);
         lv_obj_set_style_bg_opa(roller, 255, LV_PART_SELECTED | LV_STATE_DEFAULT);
 
-        lv_obj_add_event_cb(roller, roller_handler, LV_EVENT_VALUE_CHANGED, NULL);
+        lv_obj_add_event_cb(roller, roller_handler, LV_EVENT_VALUE_CHANGED, this);
     }
+    
     static void roller_handler(lv_event_t *event);
     String generateRollerString(String domain) {
         String roller = "";
@@ -48,7 +49,11 @@ class Screen_Entity_Menu : public Screen
             roller = F("No Entities found");
         }
         return roller;
-    }
+    };
+    void load(lv_event_t *event) {
+        log_d("Loading Entities menu");
+        lv_roller_set_options(roller, generateRollerString("light").c_str(), LV_ROLLER_MODE_INFINITE);
+    };
 };
 extern Screen_Entity_Menu screen_entity_menu;
 #endif

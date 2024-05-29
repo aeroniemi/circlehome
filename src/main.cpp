@@ -9,12 +9,15 @@
 #include "sys/aero_time.h"
 #include <cppQueue.h>
 #include <aero_error_handling.h>
-#include <aero_web_portal.h>
 #include "classes/Clock.h"
 #include <ImprovWiFiLibrary.h>
-
+#include <WiFi.h>
+#include <WebServer.h>
+#include <timezonedb_lookup.h>
 ImprovWiFi improvSerial(&Serial);
-HomeAssistant *ha;
+HomeAssistant has;
+HomeAssistant *ha = &has;
+WebServer server(80);
 
 Screen *global_screens[] = {
     &screen_on_off,
@@ -31,6 +34,16 @@ void log_cb(lv_log_level_t level, const char *buf)
 {
     Serial.println(buf);
 }
+void update_timezone() {
+    String timezone = ha->getTimezone();
+    log_d("Timezone: %s", timezone);
+    if (timezone.length() ==0)
+        return;
+    String tz = lookup_posix_timezone_tz(timezone.c_str());
+    settings.putString("ntp_timezone", timezone);
+    settings.putString("ntp_tz_str", tz);
+    setupTime();
+};
 
 void initializeScreens()
 {
@@ -55,10 +68,38 @@ void setupWifi(void *params)
     }
     vTaskDelete(NULL);
 }
+
+void setup_web_server()
+{
+    server.on("/", []()
+              { server.sendHeader("Location", String("http://homeassistant.local:8123/auth/authorize?client_id=http%3A%2F%2F" + WiFi.localIP().toString() + "&redirect_uri=http%3A%2F%2F" + WiFi.localIP().toString() + "/auth_callback"), true);
+                                  server.send(302, "text/plain", ""); });
+    server.on("/auth_callback", []()
+              {
+         for (int i = 0; i < server.args(); i++)
+    {
+        log_d("%s, %s", server.argName(i), server.arg(i));
+        if (server.argName(i).equals("code")) {
+            String access_code = server.arg(i);
+            String refresh_token = ha->requestRefreshToken(access_code);
+            if (refresh_token.length()==0) {
+                log_d("Error getting refresh token");
+                //error
+            };
+            settings.putString("ha_refresh", refresh_token);
+            // ESP.restart();
+        };
+    };
+
+    server.send(200, "text/plain", "Success"); });
+    server.begin();
+};
 bool initialized = false;
+bool initialized_ha = false;
 void setup()
 {
     Serial.begin(115200);
+    sleep(2);
     setupPreferences();
     xTaskCreatePinnedToCore(
         setupWifi,   /* Function to implement the task */
@@ -70,6 +111,8 @@ void setup()
         0);          /* Core where the task should run */
     improvSerial.onImprovConnected(*storeImprovSettings);
     improvSerial.setDeviceInfo(ImprovTypes::ChipFamily::CF_ESP32_S3, "CircleHome", "1.0.0", "My Device");
+    ha->setHost(settings.getString("ha_hostname", "homeasssistant.local"));
+    ha->setPort(settings.getInt("ha_port", 8123));
     Serial.setDebugOutput(true);
     m5dial_lvgl_init();
     M5Dial.Display.setBrightness(70);
@@ -78,33 +121,38 @@ void setup()
     m5dial_lvgl_next();
     ui_init();
     setupTime();
+    setup_web_server();
 }
 
 void loop()
 {
     improvSerial.handleSerial();
     m5dial_lvgl_next();
-    if (aero_web_server_enabled)
-        server.handleClient();
-    // monitor_sleep();
+    server.handleClient();
+    monitor_sleep();
+    
     if (initialized)
     {
         clock_timer.update();
+        // log_d("HA is setup? %d %s", ha->isSetup(), settings.getString("ha_refresh", "none"));
+        if (ha->isSetup() and not initialized_ha)
+        {   
+            log_d("Initializing HA");   
+            ha->createEntities();
+            ha->updateAllStates();
+            initialized_ha = true;
+        };
     }
     else
     {
         if (improvSerial.isConnected())
         {
             log_d("Connected, continue");
-            ha = new HomeAssistant(
-                settings.getString("ha_hostname", "homeasssistant.local"),
-                settings.getString("ha_token", ""),
-                settings.getInt("ha_port", 8123));
-
+            ha->setRefreshToken(settings.getString("ha_refresh", ""));
+            log_d("access token: '%s'", ha->getToken().c_str());
             initializeScreens();
-            ha->createEntities();
-            ha->updateAllStates();
             screen_main_menu.makeActive();
+            update_timezone();
             initialized = true;
         }
     };
