@@ -38,7 +38,6 @@ void update_timezone()
 {
     String timezone = ha->getTimezone();
     log_d("Timezone: %s", timezone);
-    if (timezone.length() ==0)
     if (timezone.length() == 0)
         return;
     String tz = lookup_posix_timezone_tz(timezone.c_str());
@@ -130,8 +129,6 @@ void loop()
 {
     improvSerial.handleSerial();
     m5dial_lvgl_next();
-    server.handleClient();
-    monitor_sleep();
     server.handleClient(); 
 
     if (initialized)
