@@ -2,7 +2,6 @@
 #include <M5Dial-LVGL.h>
 #include <Arduino.h>
 #include "ui/ui.h"
-#include "sys/sleep_mgmt.h"
 #include <ha_api.h>
 #include <aero_preferences.h>
 // #include "ui/screens/sree.h"
@@ -28,16 +27,19 @@ Screen *global_screens[] = {
     &screen_settings,
     &screen_timer_alert,
     &screen_timer_countdown,
-    &screen_timer_set};
+    &screen_timer_set,
+    &screen_sleep};
 ;
 void log_cb(lv_log_level_t level, const char *buf)
 {
     Serial.println(buf);
 }
-void update_timezone() {
+void update_timezone()
+{
     String timezone = ha->getTimezone();
     log_d("Timezone: %s", timezone);
     if (timezone.length() ==0)
+    if (timezone.length() == 0)
         return;
     String tz = lookup_posix_timezone_tz(timezone.c_str());
     settings.putString("ntp_timezone", timezone);
@@ -130,14 +132,15 @@ void loop()
     m5dial_lvgl_next();
     server.handleClient();
     monitor_sleep();
-    
+    server.handleClient(); 
+
     if (initialized)
     {
         clock_timer.update();
         // log_d("HA is setup? %d %s", ha->isSetup(), settings.getString("ha_refresh", "none"));
         if (ha->isSetup() and not initialized_ha)
-        {   
-            log_d("Initializing HA");   
+        {
+            log_d("Initializing HA");
             ha->createEntities();
             ha->updateAllStates();
             initialized_ha = true;
