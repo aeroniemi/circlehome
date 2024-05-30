@@ -34,3 +34,5 @@ void Screen::initialize()
     _initialize();
     create();
 };
+size_t Screen::instanceCount;
+Screen * Screen::instances[30];

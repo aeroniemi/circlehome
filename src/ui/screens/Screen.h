@@ -9,6 +9,7 @@ protected:
     lv_obj_t *_lv_screen;
     lv_group_t *_lv_group;
     lv_timer_t *_updateTimer;
+    Screen *last_screen = NULL;
     inline void _initialize()
     {
         _lv_screen = lv_obj_create(NULL);
@@ -21,13 +22,26 @@ protected:
     static void _load(lv_event_t *event);
     static void _unload(lv_event_t *event);
     static void _update(lv_timer_t *timer);
+private:
+    static size_t instanceCount;
+    static Screen *instances[30];
 
 public:
-    Screen(){};
+    Screen(){
+        instances[instanceCount++] = this;
+    };
+    
     virtual void makeActive() {
         if (lv_screen_active() != _lv_screen)
+            last_screen = getActiveInstance();
+            if (last_screen != NULL)
+                last_screen->unload(NULL);
             load(NULL);
             lv_screen_load(_lv_screen);
+    };
+    virtual void makeLastActive() {
+        if (last_screen != NULL)
+            last_screen->makeActive();
     };
     virtual bool isActive() { return lv_screen_active() == _lv_screen; };
     void initialize();
@@ -51,6 +65,14 @@ public:
     };
     inline lv_obj_t * getLvScreen() {
         return _lv_screen;
+    }
+    static Screen * getActiveInstance() {
+        for (size_t i = 0; i < instanceCount; i++)
+        {
+           if (instances[i]->isActive())
+               return instances[i];
+        };
+        return NULL;
     }
 };
 
