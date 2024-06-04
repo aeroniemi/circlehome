@@ -111,7 +111,7 @@ void setup()
         NULL,        /* Task handle. */
         0);          /* Core where the task should run */
     improvSerial.onImprovConnected(*storeImprovSettings);
-    improvSerial.setDeviceInfo(ImprovTypes::ChipFamily::CF_ESP32_S3, "CircleHome", "1.0.0", "My Device");
+    improvSerial.setDeviceInfo(ImprovTypes::ChipFamily::CF_ESP32_S3, "CircleHome", VERSION, "My Device");
     ha->setHost(settings.getString("ha_hostname", "homeasssistant.local"));
     ha->setPort(settings.getInt("ha_port", 8123));
     Serial.setDebugOutput(true);

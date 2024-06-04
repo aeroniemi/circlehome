@@ -36,6 +36,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install --upgrade platformio
       - name: Build PlatformIO Project
+        env:
+            VERSION: ${{ github.ref_name }}
         run: pio run
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
