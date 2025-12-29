@@ -1,7 +1,7 @@
 #include "Screen_Timer.h"
 void Screen_Timer_Alert::set_bg_color(lv_timer_t *timer)
 {
-    Screen_Timer_Alert *screen = (Screen_Timer_Alert *)timer->user_data;
+    Screen_Timer_Alert *screen = (Screen_Timer_Alert *)lv_timer_get_user_data(timer);
     lv_color_t color;
 
     if (screen->lit)

@@ -41,7 +41,7 @@ void Screen_Main_Menu::_create_button(Menu_Option item, int i, int angle, int ra
 };
 void Screen_Main_Menu::button_handler(lv_event_t *event)
 {
-    Screen *screen = (Screen *)event->user_data;
+    Screen *screen = (Screen *)lv_event_get_user_data(event);
     screen->makeActive();
 };
 Screen_Main_Menu screen_main_menu;

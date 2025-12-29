@@ -24,7 +24,7 @@ void Screen_Timer_Set::create()
 }
 void Screen_Timer_Set::start_handler(lv_event_t *event)
 {
-    Screen_Timer_Set *screen = (Screen_Timer_Set *)event->user_data;
+    Screen_Timer_Set *screen = (Screen_Timer_Set *)lv_event_get_user_data(event);
     char cHours[3];
     char cMinutes[3];
     char cSeconds[3];

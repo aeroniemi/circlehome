@@ -1,7 +1,7 @@
 #include "Screen_On_Off.h"
 void Screen_On_Off::arc_handler(lv_timer_t *timer)
 {
-    Screen_On_Off *screen = (Screen_On_Off *)timer->user_data;
+    Screen_On_Off *screen = (Screen_On_Off *)lv_timer_get_user_data(timer);
     int arc_value = lv_arc_get_value(screen->arc);
     log_d("arc value %d", arc_value);
     if (screen->arc_last_pos == arc_value)
@@ -16,7 +16,7 @@ void Screen_On_Off::arc_handler(lv_timer_t *timer)
 }
 void Screen_On_Off::button_handler(lv_event_t *event)
 {
-    Screen_On_Off *screen = (Screen_On_Off *)event->user_data;
+    Screen_On_Off *screen = (Screen_On_Off *)lv_event_get_user_data(event);
     ha->getActiveEntity()
         ->toggle();
 }
