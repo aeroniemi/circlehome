@@ -14,7 +14,7 @@ void Screen_Sleep::create() {
     lv_timer_create(monitorSleep, 100, this);
 };
 void Screen_Sleep::monitorSleep(lv_timer_t *timer) {
-    Screen_Sleep *screen = (Screen_Sleep*)timer->user_data;
+    Screen_Sleep *screen = (Screen_Sleep*)lv_timer_get_user_data(timer);
     if (screen->isActive())
     {
         if (lv_display_get_inactive_time(NULL) < 1000)

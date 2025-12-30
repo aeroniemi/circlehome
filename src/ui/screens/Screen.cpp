@@ -2,7 +2,7 @@
 #include <Arduino.h>
 void Screen::_load(lv_event_t *event)
 {
-    Screen *screen = (Screen *)event->user_data;
+    Screen *screen = (Screen *)lv_event_get_user_data(event);
     for (uint8_t i = 0; i < SCREEN_MAX_TIMERS; i++)
     {
 
@@ -14,7 +14,7 @@ void Screen::_load(lv_event_t *event)
 };
 void Screen::_unload(lv_event_t *event)
 {
-    Screen *screen = (Screen *)event->user_data;
+    Screen *screen = (Screen *)lv_event_get_user_data(event);
     for (uint8_t i = 0; i < SCREEN_MAX_TIMERS; i++)
     {
 
@@ -26,7 +26,7 @@ void Screen::_unload(lv_event_t *event)
 };
 void Screen::_update(lv_timer_t *timer)
 {
-    Screen *screen = (Screen *)timer->user_data;
+    Screen *screen = (Screen *)lv_timer_get_user_data(timer);
     screen->update(timer);
 };
 void Screen::initialize()

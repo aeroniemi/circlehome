@@ -6,7 +6,7 @@ static constexpr const char *const month[12] = {"Jan", "Feb", "Mar", "Apr",
                                                 "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 void Screen_Clock::update_time(lv_timer_t *timer)
 {
-    Screen_Clock *screen = (Screen_Clock *)timer->user_data;
+    Screen_Clock *screen = (Screen_Clock *)lv_timer_get_user_data(timer);
     time_t utc = time(nullptr);
     tm * lt = localtime(&utc);
     lv_label_set_text_fmt(screen->clock_text, "%02d:%02d:%02d", lt->tm_hour, lt->tm_min, lt->tm_sec);

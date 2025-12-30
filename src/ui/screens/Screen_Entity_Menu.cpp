@@ -1,7 +1,7 @@
 #include "Screen_Entity_Menu.h"
 void Screen_Entity_Menu::roller_handler(lv_event_t *event)
 {
-    Screen_Entity_Menu *screen = (Screen_Entity_Menu *)event->user_data;
+    Screen_Entity_Menu *screen = (Screen_Entity_Menu *)lv_event_get_user_data(event);
     if (ha->getNumEntities() == 0)
     {
         log_d("No Entities found, so cannot select");   
